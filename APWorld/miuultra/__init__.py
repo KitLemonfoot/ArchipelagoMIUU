@@ -135,7 +135,7 @@ class MIUUltraWorld(World):
 
     def fill_slot_data(self) -> Dict[str, Any]:
         slot_data: Dict[str, Any] = {
-            "version": "0.1.0",
+            "version": "0.1.1",
             "locations": self.game_id_to_long,
             "MedalsPerChapter": self.options.medals_per_chapter.value,
             "MedalTypes": self.options.medal_types.value,

@@ -21,26 +21,8 @@ namespace ArchipelagoMIUU.Patches
                 {
                     return;
                 }
-                Debug.Log("User died");
-                string deathlinkMessage;
-                ConnectHandler.deathAmnesty++;
-                if (ConnectHandler.deathAmnesty >= ConnectHandler.deathAmnestyMax)
-                {
-                    ConnectHandler.deathAmnesty = 0;
-                    deathlinkMessage = "You've died "+ConnectHandler.deathAmnestyMax+" times. Death Link sent.";
-                    if(ConnectHandler.deathAmnestyMax <= 1)
-                    {
-                        deathlinkMessage = "Death Link sent.";
-                    }
-                    ConnectHandler.sendDeathLink();
-                }
-                else
-                {
-                    deathlinkMessage = "You've died "+ ConnectHandler.deathAmnesty +" out of "+ ConnectHandler.deathAmnestyMax +" times...";
-                }
-                GamePlayManager.Get().SetTutorial(deathlinkMessage, null);
-                float expiry = Time.time + 3f;
-                Traverse.Create(__instance).Field("TutorialHideTime").SetValue(expiry);
+                Debug.Log("User died, fall");
+                MiscHandler.handleDeath(__instance, 0);
             }
         }
     }

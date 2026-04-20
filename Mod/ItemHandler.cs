@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace ArchipelagoMIUU
@@ -82,6 +83,20 @@ namespace ArchipelagoMIUU
                 }
                 requiredMedals[bonusarc[i]] = (i+1)*medalsPerChapter;
             }
+        }
+
+        public static bool canLogicallyCompleteLevel(string id)
+        {
+            int[] levelLogic = LocationHandler.internalLevelLogic[id];
+            bool[] items = powerupFlags.Values.ToArray<bool>();
+            for(int i=0; i<items.Length; i++)
+            {
+                if(levelLogic[i] != -1 && levelLogic[i] <= LocationHandler.medalTypes && !items[i])
+                {
+                    return false;
+                }
+            }
+            return true;
         }
 
 

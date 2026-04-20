@@ -13,7 +13,7 @@ class DeathLinkAmnesty(Range):
     display_name = "Death Link Amnesty"
     range_start = 1
     range_end = 20
-    default = 10
+    default = 5
 
 class MedalsPerChapter(Range):
     """

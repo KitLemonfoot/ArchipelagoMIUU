@@ -14,7 +14,7 @@ This is a work-in-progress BepInEx mod for [Marble It Up! Ultra](https://store.s
 - Chapters in the Bonus Arc will require you play with Gold Medal completion times or higher.
 	- Unlocking the chapters will require Gold Completion Medals, which can be found in the multiworld.
 - An additional "5 Second Time Freeze" is available as a filler item, which will slow down time for 5 seconds when in a level.
-- Death Link support: Falling out of bounds will send a Death Link. Likewise, receiving a Death Link will send you back to your last checkpoint, or the start of the level.
+- Death Link support: Falling out of bounds or getting crushed will send a Death Link. Likewise, receiving a Death Link will send you back to your last checkpoint, or the start of the level.
 	- There is also Death Link Amnesty, where you will not send a Death Link until you have died a certain amount of times.
 
 Additionally, the following features will be *disabled* while playing Archipelago:

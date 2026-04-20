@@ -66,6 +66,7 @@ namespace ArchipelagoMIUU
                 LocationHandler.scoutedLocations = scoutTask.Result;
 
 				//Get YAML settings.
+				LocationHandler.medalTypes = int.Parse(loginSuccess.SlotData["MedalTypes"].ToString());
 				LocationHandler.finalLevel = int.Parse(loginSuccess.SlotData["FinalChapter"].ToString());
 				LocationHandler.bonusArcLevel = int.Parse(loginSuccess.SlotData["BonusArcChapters"].ToString());
 				ItemHandler.medalsPerChapter = int.Parse(loginSuccess.SlotData["MedalsPerChapter"].ToString());
@@ -138,8 +139,14 @@ namespace ArchipelagoMIUU
 			MiscHandler.killMarbles();
 		}
 
-		public static void sendDeathLink(){
-			string msg = APSlot + " fell out of bounds.";
+		public static void sendDeathLink(int reason){
+			string msg;
+			switch (reason)
+			{
+				case 0: msg = APSlot + " fell out of bounds.";break;
+				case 1: msg = APSlot + " was crushed.";break;
+				default: msg = APSlot + " died for unknown reasons.";break;
+			}
 			deathLinkService.SendDeathLink(new DeathLink(ConnectHandler.APSlot, msg));
 			Debug.Log("Deathlink sent");
 		}

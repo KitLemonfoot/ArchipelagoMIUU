@@ -4,7 +4,7 @@
     <TargetFramework>net45</TargetFramework>
     <AssemblyName>ArchipelagoMIUU</AssemblyName>
     <Product>Marble It Up! Ultra Archipelago</Product>
-    <Version>0.1.0</Version>
+    <Version>0.1.1</Version>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <LangVersion>latest</LangVersion>
     <RestoreAdditionalProjectSources>

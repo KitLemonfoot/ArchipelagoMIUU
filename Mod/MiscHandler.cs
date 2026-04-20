@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using BepInEx.Configuration;
 using MIU;
+using HarmonyLib;
 
 namespace ArchipelagoMIUU
 {
@@ -46,6 +47,29 @@ namespace ArchipelagoMIUU
             }
             disallowDeathlink = false;
 
+        }
+
+        public static void handleDeath(MarbleController marble, int reason)
+        {
+            string deathlinkMessage;
+            ConnectHandler.deathAmnesty++;
+            if (ConnectHandler.deathAmnesty >= ConnectHandler.deathAmnestyMax)
+            {
+                ConnectHandler.deathAmnesty = 0;
+                deathlinkMessage = "You've died "+ConnectHandler.deathAmnestyMax+" times. Death Link sent.";
+                if(ConnectHandler.deathAmnestyMax <= 1)
+                {
+                    deathlinkMessage = "Death Link sent.";
+                }
+                ConnectHandler.sendDeathLink(reason);
+            }
+            else
+            {
+                deathlinkMessage = "You've died "+ ConnectHandler.deathAmnesty +" out of "+ ConnectHandler.deathAmnestyMax +" times...";
+            }
+            GamePlayManager.Get().SetTutorial(deathlinkMessage, null);
+            float expiry = Time.time + 3f;
+            Traverse.Create(marble).Field("TutorialHideTime").SetValue(expiry);
         }
 
         //Using this for config of AP server, slot, and password fields.

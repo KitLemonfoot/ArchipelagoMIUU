@@ -56,6 +56,7 @@ namespace ArchipelagoMIUU.Patches
                 return true;
             }
             string result = "";
+            string plural = "";
             if (!ItemHandler.requiredMedals.ContainsKey(chapterID) || ItemHandler.requiredMedals[chapterID]<0)
             {
                 result = "This chapter is not available in this multiworld...";
@@ -64,12 +65,14 @@ namespace ArchipelagoMIUU.Patches
             {
                 if (chapterID.EndsWith("a")){
                     int remaining = ItemHandler.requiredMedals[chapterID] - ItemHandler.goldCompletionMedals;
-                    result = "Receive "+remaining+" more Gold Completion Medals from the multiworld to unlock!";
+                    if (remaining > 1){plural="s";}
+                    result = "Receive "+remaining+" more Gold Completion Medal"+plural+" from the multiworld to unlock!";
                 }
                 else
                 {
                     int remaining = ItemHandler.requiredMedals[chapterID] - ItemHandler.completionMedals;
-                    result = "Receive "+remaining+" more Completion Medals from the multiworld to unlock!";
+                    if (remaining > 1){plural="s";}
+                    result = "Receive "+remaining+" more Completion Medal"+plural+" from the multiworld to unlock!";
                 }
             }
             __result = result;
