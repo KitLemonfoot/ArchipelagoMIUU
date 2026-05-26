@@ -11,7 +11,7 @@ namespace ArchipelagoMIUU.Patches
     {
         public static void Postfix(MainMenuPanel __instance)
         {
-            __instance.XBoxUserName.text = "ArchipelagoMIUU Mod v"+MyPluginInfo.PLUGIN_VERSION+"-alpha\n"+MiscHandler.connectString;
+            MiscHandler.SetConnectString(MiscHandler.connectString);
             __instance.XBoxUserName.gameObject.SetActive(value:true);
             //Remove UI panels
             GameObject coreUI = __instance.gameObject.transform.GetChild(1).gameObject;

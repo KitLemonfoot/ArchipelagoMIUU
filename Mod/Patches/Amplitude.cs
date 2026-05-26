@@ -9,7 +9,7 @@ namespace ArchipelagoMIUU.Patches
     {
         public static bool Prefix()
         {
-            Debug.Log("Got an Amplitude request, denying enqueue.");
+            MiscHandler.Log("Got an Amplitude request, denying enqueue.");
             return false;
         }
     }

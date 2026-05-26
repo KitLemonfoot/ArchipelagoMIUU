@@ -15,7 +15,7 @@ namespace ArchipelagoMIUU.Patches
             }
             if(LevelSelect.instance == null || LevelSelect.instance.level==null)
             {
-                Debug.Log("Can't update treasurebox textures as levelselect instance or level is null somehow");
+                MiscHandler.Log("Can't update treasurebox textures as levelselect instance or level is null somehow");
                 return true;
             }
             string locid = LevelSelect.instance.level.id + "-tb";

@@ -1,5 +1,5 @@
 # Marble It Up! Ultra Archipelago Client
-This is a work-in-progress BepInEx mod for [Marble It Up! Ultra](https://store.steampowered.com/app/864060/Marble_It_Up_Ultra/) that targets the [Archipelago Multiworld Randomizer](https://archipelago.gg/).
+This is a work-in-progress mod for [Marble It Up! Ultra](https://store.steampowered.com/app/864060/Marble_It_Up_Ultra/) that targets the [Archipelago Multiworld Randomizer](https://archipelago.gg/).
 
 ## What does Archipelago do to Marble It Up! Ultra?
 - Completing levels is a check.
@@ -36,14 +36,15 @@ You will need to obtain enough Completion Medals to unlock your goal level, then
 You will need the following:
 - The latest version of [Marble It Up! Ultra, downloaded from Steam](https://store.steampowered.com/app/864060/Marble_It_Up_Ultra/)
 - The Archipelago software from [their Releases page](https://github.com/ArchipelagoMW/Archipelago/releases/)
-- The APWorld and patch files from our releases page
--   [BepInEx x64 5.4.23.x](https://github.com/BepInEx/BepInEx/releases)
+- The APWorld and mod files from our releases page
+- MIUU Mod Loader from [their Releases page](https://git.thearst3rd.com/thearst3rd/miuu-mod-loader/releases/latest)
+- MIUU Console Unlocker from [their Releases page](https://git.thearst3rd.com/thearst3rd/miuu-console-unlocker/releases/latest)
 
 ### Installing
-1. Navigate to Marble It Up! Ultra's local file directory. This can be found by right-clicking on the game in your Steam Library, selecting *Manage*, then selecting *Browse Local Files*. 
-2. Install BepInEx to your copy of Marble It Up! Ultra. The guide to do so can be found [in their User Guide.](https://docs.bepinex.dev/articles/user_guide/installation/index.html)
-3. Install the contents of `MIUU_Patches.zip` to the BepInEx folder. You should have two folders in the BepInEx folder: `core` and `plugins`.
-4. Run the game to generate BepInEx's and the mod's config data.
+1. Navigate to Marble It Up! Ultra's local file directory. This can be found by right-clicking on the game in your Steam Library, selecting *Manage*, then selecting *Browse Local Files*.
+2. Install [MIUU Mod Loader](https://git.thearst3rd.com/thearst3rd/miuu-mod-loader) to your copy of Marble It Up! Ultra if it's not already installed.
+3. Extract the contents of `ArchipelagoMIUU-vX.Y.Z.zip` to the `Mods` folder.
+4. Also install [Console Unlocker](https://git.thearst3rd.com/thearst3rd/miuu-console-unlocker) if it's not already installed.
 
 ### APWorld Setup
 1. Install Archipelago and open the Archipelago launcher.
@@ -54,17 +55,21 @@ You will need the following:
 All further instructions can be found in the [official Archipelago Setup Guide](https://archipelago.gg/tutorial/Archipelago/setup/en#on-your-local-installation).
 
 ### Connection
-1. In the `ArchipelagoMIUU.cfg` file in the `BepInEx\config` folder, enter your Archipelago server's IP address, your slot name, and your server's password if any. 
-	- You may also override your YAML's Death Link and Death Link Amnesty settings in this file if you wish .
-2. Start Marble It Up! Ultra. The game should connect to the Archipelago server automatically during startup.
+1. Start Marble It Up! Ultra and press `~` to access the in-game console.
+2. In the console, use the `apConnect` command to connect to the archipelago server.
 3. Your Archipelago server IP should be displayed in the top right corner of the main menu if the connection was successful.
+4. **Optional**: Use the `apOverrideDl` and `apOverrideDlAmnesty` commands to override the YAML's Death Link settings. Examples:
+	- `apOverrideDl 0` or `apOverrideDl 1` to forcably disable or enable Death Link
+	- `apOverrideDlAmnesty 10` to forcably set the Death Link amnesty to 10 deaths (for when Death Link is enabled)
+	- `apOverride -1` and `apOverrideDlAmnesty -1` to disable the overrides (it will use the values in the YAML)
 
 ## Building
 You will need the latest version of the [.NET SDK](https://dotnet.microsoft.com/download) installed.
-1. Place your vanilla Marble It Up! Ultra `Assembly-CSharp.dll`, `Unity.TextMeshPro.dll`, and `UnityEngine.UI.dll` files in the project's lib folder. These dll files can be obtained from the `/Marble It Up_Data/Managed/` folder in your Marble It Up! Ultra install.
-2. Ensure you are building a BepInEx 5 Plugin targeting NET45 and Unity 2020.3.44.
-3. Run `dotnet build`.
-4. Move the resultant `ArchipelagoMIUU.dll`, as well as `Archipelago.MultiClient.Net.dll` and `Newtonsoft.Json.dll` to your BepInEx plugins folder.
+1. In the `Mod` folder, copy the file `UserProperties.xml.template` as `UserProperties.xml` and edit it as following:
+	- Set `GameDir` to be a path pointing to your Marble It Up! Ultra game installation
+	- If necessary, change `GameDataDir` to point to the `_Data` folder in your Marble It Up! Ultra installation. Required on Linux
+2. Ensure [MIUU Mod Loader](https://git.thearst3rd.com/thearst3rd/miuu-mod-loader) is installed so that the Harmony dll can be found.
+3. Build the project with `dotnet build --configuration Release`. This will build the mod and copy it and its dependencies into the `Mods` folder of your MIUU install!
 
 ## Todo
 Quite a bit.

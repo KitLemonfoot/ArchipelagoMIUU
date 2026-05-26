@@ -23,7 +23,7 @@ namespace ArchipelagoMIUU.Patches
                     MarbleController[] array = GameProcess.ServerProcess.FindObjectsOfType<MarbleController>();
                     if (array.Length == 0)
                     {
-                        Debug.Log("Failed to find any marbles to tell about no logic.");
+                        MiscHandler.Log("Failed to find any marbles to tell about no logic.");
                         return;
                     }
                     GamePlayManager.Get().SetTutorial("You may not have all the required items to beat this level...", null);
@@ -34,7 +34,7 @@ namespace ArchipelagoMIUU.Patches
                     }
                 }
             }
-            
+
         }
     }
 

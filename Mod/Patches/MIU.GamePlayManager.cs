@@ -11,7 +11,7 @@ namespace ArchipelagoMIUU.Patches
         {
             if(LevelSelect.instance == null)
             {
-                Debug.Log("Unable to send checks, as LevelSelect instance is null somehow");
+                MiscHandler.Log("Unable to send checks, as LevelSelect instance is null somehow");
                 return;
             }
             MIU.MarbleLevel level = LevelSelect.instance.level;
@@ -59,7 +59,7 @@ namespace ArchipelagoMIUU.Patches
         {
             if(LevelSelect.instance == null)
             {
-                Debug.Log("Unable to send checks, as LevelSelect instance is null somehow");
+                MiscHandler.Log("Unable to send checks, as LevelSelect instance is null somehow");
                 return false;
             }
             MIU.MarbleLevel level = LevelSelect.instance.level;
@@ -79,7 +79,7 @@ namespace ArchipelagoMIUU.Patches
                 }
                 else
                 {
-                    Notification.Notify("Treasure Boxes are not enabled in this multiworld.", Localization.TryTranslate("Treasure Box Found!", "Unlocks"), 3.5f, Plugin.APIcon);
+                    Notification.Notify("Treasure Boxes are not enabled in this multiworld.", Localization.TryTranslate("Treasure Box Found!", "Unlocks"), 3.5f, Assets.APIcon);
                 }
             }
             return false;

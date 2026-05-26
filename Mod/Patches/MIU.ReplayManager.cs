@@ -9,7 +9,7 @@ namespace ArchipelagoMIUU.Patches
     {
         public static bool Prefix()
         {
-            Debug.Log("Got a replay save request, refusing.");
+            MiscHandler.Log("Got a replay save request, refusing.");
             return false;
         }
     }
@@ -20,7 +20,7 @@ namespace ArchipelagoMIUU.Patches
     {
         public static bool Prefix()
         {
-            Debug.Log("Got a replay save request, refusing.");
+            MiscHandler.Log("Got a replay save request, refusing.");
             return false;
         }
     }

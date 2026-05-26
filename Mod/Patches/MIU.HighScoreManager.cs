@@ -9,7 +9,7 @@ namespace ArchipelagoMIUU.Patches
     {
         public static bool Prefix()
         {
-            Debug.Log("Got a highscore save request, refusing.");
+            MiscHandler.Log("Got a highscore save request, refusing.");
             return false;
         }
     }

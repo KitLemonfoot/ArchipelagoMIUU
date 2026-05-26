@@ -15,7 +15,7 @@ namespace ArchipelagoMIUU.Patches
             }
             if (!marble.isMyClientMarble())
             {
-                Debug.Log("User died, crush");
+                MiscHandler.Log("User died, crush");
                 MiscHandler.handleDeath(marble, 1);
             }
             return;

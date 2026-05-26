@@ -7,16 +7,15 @@ namespace ArchipelagoMIUU.Patches
     [HarmonyPatch(typeof(MedalsDisplay), "Setup")]
     class MedalsDisplay_Setup_Patch
     {
-        public static bool Prefix(MedalsDisplay __instance, float silver, float gold)
+        public static void Postfix(MedalsDisplay __instance)
         {
             if (!ConnectHandler.Authenticated)
-            {
-                return true;
-            }
+                return;
             bool flag = LocationHandler.isLocationChecked(LevelSelect.instance.level.id + "-tb");
-            string text = flag ? "<space=0.5em> <sprite=9>" : "<space=0.5em> <sprite=8>";
-            __instance.MedalTimes.text = "<sprite=1> " + SegmentedTime.SPTimeText(silver) + "<space=0.5em> <sprite=2> " + SegmentedTime.SPTimeText(gold) + text;
-            return false;
+            if (flag && __instance.MedalTimes.text.Contains("<sprite=8>"))
+                __instance.MedalTimes.text = __instance.MedalTimes.text.Replace("<sprite=8>", "<sprite=9>");
+            if (!flag && __instance.MedalTimes.text.Contains("<sprite=9>"))
+                __instance.MedalTimes.text = __instance.MedalTimes.text.Replace("<sprite=9>", "<sprite=8>");
         }
     }
 

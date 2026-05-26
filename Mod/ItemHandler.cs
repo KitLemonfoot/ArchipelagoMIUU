@@ -43,7 +43,7 @@ namespace ArchipelagoMIUU
                 powerupFlags[itemName] = true;
                 if (Notification.instance != null)
                 {
-                    string message = "Received " + itemName + " from " + sender; 
+                    string message = "Received " + itemName + " from " + sender;
                     if(sender == ConnectHandler.APSlot)
                     {
                         message = "You found your " + itemName;
@@ -58,12 +58,12 @@ namespace ArchipelagoMIUU
                 case "Gold Completion Medal": goldCompletionMedals+=1;break;
                 case "5 Second Time Freeze": MiscHandler.doTimeTravelItem();break;
                 case "Time Add Trap": MiscHandler.doTimeAddTrap();break;
-                case "Cosmetic Shuffle Trap": MiscHandler.doCosmeticShuffleTrap();break; 
-                default: Debug.Log("Invalid item "+itemName+", ignoring.");break;
+                case "Cosmetic Shuffle Trap": MiscHandler.doCosmeticShuffleTrap();break;
+                default: MiscHandler.Log("Invalid item "+itemName+", ignoring.");break;
             }
             if (Notification.instance != null)
             {
-                string message = "Received " + colorData + itemName + "</color> from " + sender; 
+                string message = "Received " + colorData + itemName + "</color> from " + sender;
                 if(sender == ConnectHandler.APSlot)
                 {
                     message = "You found your " + colorData + itemName + "</color>";
@@ -84,7 +84,7 @@ namespace ArchipelagoMIUU
             {
                 case "Completion Medal": completionMedals+=1;break;
                 case "Gold Completion Medal": goldCompletionMedals+=1;break;
-                default: Debug.Log("Ignoring item " + itemName);break;
+                default: MiscHandler.Log("Ignoring item " + itemName);break;
             }
         }
 

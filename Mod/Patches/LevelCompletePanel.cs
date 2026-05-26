@@ -10,7 +10,7 @@ namespace ArchipelagoMIUU.Patches
     {
         public static bool Prefix(LevelCompletePanel __instance, ref Replay replay, ref bool shouldSave)
         {
-            Debug.Log("Hijacking replay...");
+            MiscHandler.Log("Hijacking replay...");
             replay=null;
             shouldSave = false;
             return true;
@@ -23,7 +23,7 @@ namespace ArchipelagoMIUU.Patches
     {
         public static bool Prefix(LevelCompletePanel __instance)
         {
-            Debug.Log("Refusing replay upload (AGS).");
+            MiscHandler.Log("Refusing replay upload (AGS).");
             SaveIndicator.isSaving = false;
             __instance.canRetry = true;
             return false;

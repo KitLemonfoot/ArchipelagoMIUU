@@ -21,27 +21,29 @@ namespace ArchipelagoMIUU
         public static string APserver = null;
 		public static string APSlot = null;
 		public static bool doingDeathlink = false;
+		public static bool doingDeathlinkYaml = false;
 		public static int deathAmnesty = 0;
 		public static int deathAmnestyMax = 15;
+		public static int deathAmnestyMaxYaml = 15;
 		public static DeathLinkService deathLinkService = null;
 
         public static void ConnectToAP(){
-			Debug.Log("Trying to connect to AP. Please wait...");
+			MiscHandler.Log("Trying to connect to AP. Please wait...");
 			LoginResult result;
-			APSlot = MiscHandler.config_APslot.Value;
-			APserver = MiscHandler.config_APip.Value;
-			
+			APSlot = MiscHandler.config_APslot;
+			APserver = MiscHandler.config_APip;
+
 			try{
 				Session = ArchipelagoSessionFactory.CreateSession(APserver);
-				
+
 				result = Session.TryConnectAndLogin(
-					"Marble It Up! Ultra", 
-					APSlot, 
+					"Marble It Up! Ultra",
+					APSlot,
 					ItemsHandlingFlags.AllItems,
 					new Version(0,6,7),
 					null,
 					null,
-					MiscHandler.config_APpassword.Value == "" ? null : MiscHandler.config_APpassword.Value,
+					MiscHandler.config_APpassword == "" ? null : MiscHandler.config_APpassword,
 					true
 				);
 			}
@@ -50,9 +52,9 @@ namespace ArchipelagoMIUU
 			}
 			if (result is LoginSuccessful loginSuccess)
 			{
-				Debug.Log("Successfully connected to server, setting up...");
+				MiscHandler.Log("Successfully connected to server, setting up...");
 				Authenticated = true;
-				
+
 				flushItems();
 				Session.Items.ItemReceived += ItemReceived;
 
@@ -61,7 +63,7 @@ namespace ArchipelagoMIUU
 				long[] ids = (new List<long>(LocationHandler.locations.Values)).ToArray();
 
 				//Scout locations
-				Debug.Log("Scouting locations...");
+				MiscHandler.Log("Scouting locations...");
 				Task<Dictionary<long, ScoutedItemInfo>> scoutTask = ConnectHandler.Session.Locations.ScoutLocationsAsync(ids);
                 scoutTask.Wait();
                 LocationHandler.scoutedLocations = scoutTask.Result;
@@ -74,19 +76,21 @@ namespace ArchipelagoMIUU
 				LocationHandler.treasureboxsanity = bool.Parse(loginSuccess.SlotData["Treasureboxsanity"].ToString());
 
 				//Setup deathlink
-				doingDeathlink = bool.Parse(loginSuccess.SlotData["death_link"].ToString());
+				doingDeathlinkYaml = bool.Parse(loginSuccess.SlotData["death_link"].ToString());
+				doingDeathlink = doingDeathlinkYaml;
 				deathAmnesty = 0;
-				deathAmnestyMax = int.Parse(loginSuccess.SlotData["death_link_amnesty"].ToString());
+				deathAmnestyMaxYaml = int.Parse(loginSuccess.SlotData["death_link_amnesty"].ToString());
+				deathAmnestyMax = deathAmnestyMaxYaml;
 				deathLinkService = Session.CreateDeathLinkService();
-				if(MiscHandler.config_overrideDL.Value != -1)
+				if(MiscHandler.config_overrideDL != -1)
 				{
-					doingDeathlink = MiscHandler.config_overrideDL.Value>=1;
-					Debug.Log("DL overwritten with "+doingDeathlink);
+					doingDeathlink = MiscHandler.config_overrideDL >= 1;
+					MiscHandler.Log("DL overwritten with "+doingDeathlink);
 				}
-				if(MiscHandler.config_overrideDLAmnesty.Value > 0)
+				if(MiscHandler.config_overrideDLAmnesty > 0)
 				{
-					deathAmnestyMax = Math.Min(20, MiscHandler.config_overrideDLAmnesty.Value);
-					Debug.Log("DL amnesty overwritten with "+deathAmnestyMax);
+					deathAmnestyMax = Math.Min(20, MiscHandler.config_overrideDLAmnesty);
+					MiscHandler.Log("DL amnesty overwritten with "+deathAmnestyMax);
 				}
 
 				if (doingDeathlink)
@@ -95,10 +99,10 @@ namespace ArchipelagoMIUU
 					deathLinkService.OnDeathLinkReceived += DeathLinkRecieved;
 				}
 
-				MiscHandler.connectString = "Connected to "+APserver;
+				MiscHandler.SetConnectString("Connected to " + APserver);
 				ItemHandler.calculateRequiredMedals();
 
-				Debug.Log("Successfully set up a connection to Archipelago. Let's play!");
+				MiscHandler.Log("Successfully set up a connection to Archipelago. Let's play!");
 			}
             else if (result is LoginFailure failure)
 			{
@@ -111,7 +115,8 @@ namespace ArchipelagoMIUU
 				{
 					errorMessage += $"{error}";
 				}
-				Debug.Log(errorMessage);
+				MiscHandler.Log(errorMessage);
+				MiscHandler.SetConnectString(errorMessage);
 				Session = null;
 				return;
 			}
@@ -119,7 +124,7 @@ namespace ArchipelagoMIUU
 
 		public static void flushItems()
 		{
-			Debug.Log("Flushing items");
+			MiscHandler.Log("Flushing items");
 			while (Session.Items.Any())
 			{
 				ItemInfo item = Session.Items.PeekItem();
@@ -134,7 +139,7 @@ namespace ArchipelagoMIUU
 			string name = item.ItemName;
 			string sender = item.Player.Name;
 			string colorData = MiscHandler.getItemColor(item.Flags);
-			Debug.Log("Got item from AP: "+name);
+			MiscHandler.Log("Got item from AP: "+name);
 			ItemHandler.recieveItem(name, sender, colorData);
 			helper.DequeueItem();
 		}
@@ -163,7 +168,7 @@ namespace ArchipelagoMIUU
 				default: msg = APSlot + " died for unknown reasons.";break;
 			}
 			deathLinkService.SendDeathLink(new DeathLink(ConnectHandler.APSlot, msg));
-			Debug.Log("Deathlink sent");
+			MiscHandler.Log("Deathlink sent");
 		}
 
         public static void SendCompletion()

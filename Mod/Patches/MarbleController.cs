@@ -21,7 +21,7 @@ namespace ArchipelagoMIUU.Patches
                 {
                     return;
                 }
-                Debug.Log("User died, fall");
+                MiscHandler.Log("User died, fall");
                 MiscHandler.handleDeath(__instance, 0);
             }
         }

@@ -1,0 +1,12 @@
+<Project>
+	<PropertyGroup>
+		<UserPropertiesSetUp>True</UserPropertiesSetUp>
+		<!-- Insert path to MIUU game directory here -->
+		<GameDir></GameDir>
+		<!-- If necessary, change path to MIUU data directory here -->
+		<!-- Subdirectory is "Marble It Up_Data" on Windows, but "MarbleItUp_Data" on Linux... -->
+		<GameDataDir>$(GameDir)\Marble It Up_Data</GameDataDir>
+		<!-- Insert path to where your mod should build to -->
+		<ModOutputDir>$(GameDir)\Mods\ArchipelagoMIUU</ModOutputDir>
+	</PropertyGroup>
+</Project>

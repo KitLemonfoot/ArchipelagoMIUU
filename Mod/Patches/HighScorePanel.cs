@@ -71,7 +71,7 @@ namespace ArchipelagoMIUU.Patches
             __result = "Required Items for Completion";
         }
     }
-    
+
     //Highscore panel stubbing.
     [HarmonyPatch(typeof(HighScorePanel), "NextHSMode")]
     class HighScorePanel_NextHSMode_Patch
