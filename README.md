@@ -37,14 +37,14 @@ You will need the following:
 - The latest version of [Marble It Up! Ultra, downloaded from Steam](https://store.steampowered.com/app/864060/Marble_It_Up_Ultra/)
 - The Archipelago software from [their Releases page](https://github.com/ArchipelagoMW/Archipelago/releases/)
 - The APWorld and mod files from our releases page
-- MIUU Mod Loader from [their Releases page](https://git.thearst3rd.com/thearst3rd/miuu-mod-loader/releases/latest)
-- MIUU Console Unlocker from [their Releases page](https://git.thearst3rd.com/thearst3rd/miuu-console-unlocker/releases/latest)
+- MIUU Mod Loader from [thearst3rd's Releases page](https://git.thearst3rd.com/thearst3rd/miuu-mod-loader/releases/latest)
+- MIUU Console Unlocker from [thearst3rd's Releases page](https://git.thearst3rd.com/thearst3rd/miuu-console-unlocker/releases/latest)
 
 ### Installing
 1. Navigate to Marble It Up! Ultra's local file directory. This can be found by right-clicking on the game in your Steam Library, selecting *Manage*, then selecting *Browse Local Files*.
 2. Install [MIUU Mod Loader](https://git.thearst3rd.com/thearst3rd/miuu-mod-loader) to your copy of Marble It Up! Ultra if it's not already installed.
-3. Extract the contents of `ArchipelagoMIUU-vX.Y.Z.zip` to the `Mods` folder.
-4. Also install [Console Unlocker](https://git.thearst3rd.com/thearst3rd/miuu-console-unlocker) if it's not already installed.
+3. Install [MIUU Console Unlocker](https://git.thearst3rd.com/thearst3rd/miuu-console-unlocker) if it's not already installed.
+4. Extract the contents of `ArchipelagoMIUU_vX.Y.Z.zip` to the `Mods` folder.
 
 ### APWorld Setup
 1. Install Archipelago and open the Archipelago launcher.
@@ -72,13 +72,14 @@ You will need the latest version of the [.NET SDK](https://dotnet.microsoft.com/
 3. Build the project with `dotnet build --configuration Release`. This will build the mod and copy it and its dependencies into the `Mods` folder of your MIUU install!
 
 ## Todo
-Quite a bit.
+A good amount.
 - Add individual gems as locations and items (Gemsanity).
-- Create a proper GUI for connecting.
+- Change how goaling works; add options for "X levels in last chapter" and "all levels in last chapter".
 - Implement entrance/level rando. (!!!)
 - Code cleanup and eventual 1.0 release; my plan is to PR this game to Core once it's 100% ready!
 
 ## Special Thanks
+- **thearst3rd** for refactoring the mod to work with existing MIUU modding infrastructure
 - **Jarno** for creating their [Timespinner Archipelago implementation](https://github.com/Jarno458/TsRandomizer) that I based a lot of the APWorld code off of
 - **icsharpcode** for creating [ILSpy](https://github.com/icsharpcode/ILSpy) to decompile Marble It Up! Ultra's C# code
 - **The Marble Blast / Marble It Up team** for creating Marble It Up! Ultra (and for keeping the dreams of this silly marble game from my childhood alive)
