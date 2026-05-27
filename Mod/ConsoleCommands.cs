@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using MIU;
 
 namespace ArchipelagoMIUU
@@ -40,20 +41,27 @@ namespace ArchipelagoMIUU
                 output += usage;
                 return output;
             }
+            if (!ConnectHandler.Authenticated)
+            {
+                return "You are not currently connected to an Archipelago server.";
+            }
 
             switch (args[0])
             {
                 case "-1":
                     MiscHandler.config_overrideDL = -1;
                     ConnectHandler.doingDeathlink = ConnectHandler.doingDeathlinkYaml;
+                    ConnectHandler.updateDeathLinkStatus();
                     return "Death Link override is disabled";
                 case "0":
                     MiscHandler.config_overrideDL = 0;
                     ConnectHandler.doingDeathlink = false;
+                    ConnectHandler.updateDeathLinkStatus();
                     return "Death Link is now overridden to disabled";
                 case "1":
                     MiscHandler.config_overrideDL = 1;
                     ConnectHandler.doingDeathlink = true;
+                    ConnectHandler.updateDeathLinkStatus();
                     return "Death Link is now overridden to ENABLED";
                 default:
                     return "Unknown value " + args[0] + "\n" + usage;
@@ -91,6 +99,32 @@ namespace ArchipelagoMIUU
 
             ConnectHandler.deathAmnestyMax = value;
             return "Death Link Amnesty is now " + value;
+        }
+
+        [ConsoleCommand(description = "Enables or disables various AP elements when not connected to an Archipelago server", paramsDescription = "[\"element\"]")]
+        public static string apToggleElement(params string[] args)
+        {
+            if (ConnectHandler.Authenticated)
+            {
+                return "You may not use this command at this time as you are currently connected to an Archipelago server.";
+            }
+            if (args.Length < 1)
+            {
+                string output = "Current values: \n";
+                foreach(KeyValuePair<string, bool> kvp in ItemHandler.powerupFlags)
+                {
+                    output+= kvp.Key + ": " + kvp.Value.ToString() + "\n";
+                }
+                return output;
+            }
+            string element = args[0];
+            if (!ItemHandler.powerupFlags.ContainsKey(element))
+            {
+                return "Item " + element + " is not a valid MIUU item.";
+            }
+            ItemHandler.powerupFlags[element] = !ItemHandler.powerupFlags[element];
+            return "Element " + element + " availability has been set to " + ItemHandler.powerupFlags[element].ToString();
+            
         }
     }
 }

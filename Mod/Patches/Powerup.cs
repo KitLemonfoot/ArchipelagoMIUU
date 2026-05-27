@@ -9,10 +9,6 @@ namespace ArchipelagoMIUU.Patches
     {
         public static bool Prefix(Powerup __instance)
         {
-            if (!ConnectHandler.Authenticated)
-            {
-                return true;
-            }
             //Jump
             if(__instance.Effect.name == "Super Jump Pickup" && !ItemHandler.powerupFlags["Super Jump"])
             {

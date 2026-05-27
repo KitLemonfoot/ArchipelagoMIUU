@@ -10,12 +10,12 @@ namespace ArchipelagoMIUU
         //Powerup flags.
         public static Dictionary<string, bool> powerupFlags = new Dictionary<string, bool>()
         {
-            {"Super Jump", false},
-            {"Boost", false},
-            {"Feather Fall", false},
-            {"Gravity Surfaces", false},
-            {"Bounce Surfaces", false},
-            {"Blue Moving Platforms", false},
+            {"Super Jump", true},
+            {"Boost", true},
+            {"Feather Fall", true},
+            {"Gravity Surfaces", true},
+            {"Bounce Surfaces", true},
+            {"Blue Moving Platforms", true},
             {"Blast", false}
         };
 
@@ -46,7 +46,7 @@ namespace ArchipelagoMIUU
                     string message = "Received " + itemName + " from " + sender;
                     if(sender == ConnectHandler.APSlot)
                     {
-                        message = "You found your " + itemName;
+                        message = "You found your " + colorData + itemName + "</color>";
                     }
                     Notification.Notify(message, "Archipelago", 4f, Notification.instance.FoundEgg);
                 }
@@ -84,7 +84,7 @@ namespace ArchipelagoMIUU
             {
                 case "Completion Medal": completionMedals+=1;break;
                 case "Gold Completion Medal": goldCompletionMedals+=1;break;
-                default: MiscHandler.Log("Ignoring item " + itemName);break;
+                default: break;
             }
         }
 
@@ -128,6 +128,16 @@ namespace ArchipelagoMIUU
             return true;
         }
 
+        public static void wipeItems()
+        {
+            string[] powerups = powerupFlags.Keys.ToArray();
+            foreach(string powerup in powerups)
+            {
+                powerupFlags[powerup] = false;
+            }
+            completionMedals = 0;
+            goldCompletionMedals = 0;
+        }
 
     }
 

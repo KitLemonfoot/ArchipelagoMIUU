@@ -10,7 +10,7 @@ namespace ArchipelagoMIUU
 {
     public static class MiscHandler
     {
-        public static string config_APip = "archipelago.gg:38281";
+        public static string config_APip = "archipelago.gg:";
         public static string config_APslot = "MIUUPlayer";
         public static string config_APpassword = "";
         public static int config_overrideDL = -1;
@@ -22,7 +22,7 @@ namespace ArchipelagoMIUU
 
         public static void Log(string message)
         {
-            message = "[ARCHIPELAGO] " + message;
+            message = "[ARCHIPELAGOMIUU] " + message;
             Debug.Log(message);
         }
 

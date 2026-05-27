@@ -18,11 +18,6 @@ namespace ArchipelagoMIUU.Patches
             GameObject right = coreUI.transform.GetChild(4).gameObject;
             right.transform.GetChild(1).gameObject.SetActive(false);
             right.transform.GetChild(2).gameObject.SetActive(false);
-            //GameObject bottom = coreUI.transform.GetChild(3).gameObject;
-            //GameObject demoButton = bottom.transform.GetChild(0).gameObject;
-            //TextMeshProUGUI demoButtonLabel = demoButton.transform.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>();
-            //demoButtonLabel.text = "Archipelago";
-            //demoButton.SetActive(true);
         }
     }
 
@@ -76,18 +71,6 @@ namespace ArchipelagoMIUU.Patches
 			};
             ConfirmationWindow.instance.Open("Sorry", "Custom levels are disabled while using the Archipelago mod.", "OK", "", acceptAction);
             return false;
-        }
-    }
-
-    //Send demo button to AP menu.
-    [HarmonyPatch(typeof(MainMenuPanel), "DemoButton")]
-    class MainMenuPanel_DemoButton_Patch
-    {
-        public static void Postfix()
-        {
-            PanelManager.instance.GoToPanel(PanelType.Multiplayer);
-            MultiplayerPanel.instance.GoToCreatePanel();
-            MultiplayerPanel.instance.curMode = MultiplayerPanel.PanelMode.Base;
         }
     }
 }

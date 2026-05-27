@@ -55,6 +55,7 @@ namespace ArchipelagoMIUU
 				MiscHandler.Log("Successfully connected to server, setting up...");
 				Authenticated = true;
 
+				ItemHandler.wipeItems();
 				flushItems();
 				Session.Items.ItemReceived += ItemReceived;
 
@@ -93,11 +94,8 @@ namespace ArchipelagoMIUU
 					MiscHandler.Log("DL amnesty overwritten with "+deathAmnestyMax);
 				}
 
-				if (doingDeathlink)
-				{
-					deathLinkService.EnableDeathLink();
-					deathLinkService.OnDeathLinkReceived += DeathLinkRecieved;
-				}
+				deathLinkService.OnDeathLinkReceived += DeathLinkRecieved;
+				updateDeathLinkStatus();
 
 				MiscHandler.SetConnectString("Connected to " + APserver);
 				ItemHandler.calculateRequiredMedals();
@@ -122,9 +120,27 @@ namespace ArchipelagoMIUU
 			}
         }
 
+		public static void updateDeathLinkStatus()
+		{
+			if (doingDeathlink)
+			{
+				deathLinkService.EnableDeathLink();
+				return;
+			}
+			deathLinkService.DisableDeathLink();
+		}
+
+		public static void Disconnect()
+		{
+			if(Session != null && Session.Socket != null) Session.Socket.DisconnectAsync();
+			Session = null;
+			Authenticated = false;
+			ItemHandler.wipeItems();
+		}
+
 		public static void flushItems()
 		{
-			MiscHandler.Log("Flushing items");
+			//MiscHandler.Log("Flushing items");
 			while (Session.Items.Any())
 			{
 				ItemInfo item = Session.Items.PeekItem();

@@ -9,10 +9,6 @@ namespace ArchipelagoMIUU.Patches
     {
         public static bool Prefix(ElevatorMover __instance)
         {
-            if (!ConnectHandler.Authenticated)
-            {
-                return true;
-            }
             if((!ItemHandler.powerupFlags["Blue Moving Platforms"]) && __instance.CollapseTriggered)
             {
                 return false;

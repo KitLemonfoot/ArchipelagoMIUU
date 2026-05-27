@@ -10,10 +10,6 @@ namespace ArchipelagoMIUU.Patches
     {
         public static void Postfix(Material m, BumperController bumper, TriangleGrid.TriangleSurfaceData tri)
         {
-            if (!ConnectHandler.Authenticated)
-            {
-                return;
-            }
             if(tri.materialLabels.HasFlag(MaterialLabel.Bounce))
             {
                 if(!ItemHandler.powerupFlags["Bounce Surfaces"])
