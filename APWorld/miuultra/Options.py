@@ -48,17 +48,34 @@ class ExtraMedals(Range):
     range_end = 5
     default = 3
 
-class MedalTypes(Choice):
+class BronzeMedals(Toggle):
     """
-    Choose which types of level completions to count as checks.
-    Enabling a higher tier medal will also enable all tiers below it.
+    Choose if beating a level should give you a check.
+    NOTE: At least one of these four medal checks must be enabled.
     """
-    display_name = "Medal Types"
-    option_normal = 0
-    option_silver = 1
-    option_gold = 2
-    option_diamond = 3
-    default = 1
+    display_name = "Bronze Medal Checks"
+    default = True
+
+class SilverMedals(Toggle):
+    """
+    Choose if beating the silver time should give you a check.
+    """
+    display_name = "Silver Medal Checks"
+    default = True
+
+class GoldMedals(Toggle):
+    """
+    Choose if beating the gold time should give you a check.
+    """
+    display_name = "Gold Medal Checks"
+    default = False
+
+class DiamondMedals(Toggle):
+    """
+    Choose if beating the diamond time should give you a check.
+    """
+    display_name = "Diamond Medal Checks"
+    default = False
 
 class BonusArcChapters(Choice):
     """
@@ -118,7 +135,10 @@ class CosmeticShuffleTrapWeight(Range):
 class MIUUltraOptions(PerGameCommonOptions):
     final_chapter: FinalChapter
     bonus_arc_chapters: BonusArcChapters
-    medal_types: MedalTypes
+    bronze_medals: BronzeMedals
+    silver_medals: SilverMedals
+    gold_medals: GoldMedals
+    diamond_medals: DiamondMedals
     medals_per_chapter: MedalsPerChapter
     extra_medals: ExtraMedals
     treasureboxsanity: TreasureBoxSanity
@@ -128,11 +148,14 @@ class MIUUltraOptions(PerGameCommonOptions):
     trap_percent: TrapFillPercentage
     addtimetrap_weight: AddTimeTrapWeight
     cosmetictrap_weight: CosmeticShuffleTrapWeight
-    
+
 
 miuu_option_groups = [
     OptionGroup("Chapter Settings", [
-        MedalTypes,
+        BronzeMedals,
+        SilverMedals,
+        GoldMedals,
+        DiamondMedals,
         FinalChapter,
         BonusArcChapters
     ]),

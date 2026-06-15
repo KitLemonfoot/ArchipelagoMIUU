@@ -70,11 +70,32 @@ namespace ArchipelagoMIUU
                 LocationHandler.scoutedLocations = scoutTask.Result;
 
 				//Get YAML settings.
-				LocationHandler.medalTypes = int.Parse(loginSuccess.SlotData["MedalTypes"].ToString());
+				LocationHandler.bronzeMedals = bool.Parse(loginSuccess.SlotData["BronzeMedals"].ToString());
+				LocationHandler.silverMedals = bool.Parse(loginSuccess.SlotData["SilverMedals"].ToString());
+				LocationHandler.goldMedals = bool.Parse(loginSuccess.SlotData["GoldMedals"].ToString());
+				LocationHandler.diamondMedals = bool.Parse(loginSuccess.SlotData["DiamondMedals"].ToString());
 				LocationHandler.finalLevel = int.Parse(loginSuccess.SlotData["FinalChapter"].ToString());
 				LocationHandler.bonusArcLevel = int.Parse(loginSuccess.SlotData["BonusArcChapters"].ToString());
 				ItemHandler.medalsPerChapter = int.Parse(loginSuccess.SlotData["MedalsPerChapter"].ToString());
 				LocationHandler.treasureboxsanity = bool.Parse(loginSuccess.SlotData["Treasureboxsanity"].ToString());
+
+				if (LocationHandler.diamondMedals)
+					LocationHandler.highestMedalType = 3;
+				else if (LocationHandler.goldMedals)
+					LocationHandler.highestMedalType = 2;
+				else if (LocationHandler.silverMedals)
+					LocationHandler.highestMedalType = 1;
+				else
+					LocationHandler.highestMedalType = 0;
+
+				if (LocationHandler.bronzeMedals)
+					LocationHandler.lowestMedalType = 0;
+				else if (LocationHandler.silverMedals)
+					LocationHandler.lowestMedalType = 1;
+				else if (LocationHandler.goldMedals)
+					LocationHandler.lowestMedalType = 2;
+				else
+					LocationHandler.lowestMedalType = 3;
 
 				//Setup deathlink
 				doingDeathlinkYaml = bool.Parse(loginSuccess.SlotData["death_link"].ToString());

@@ -32,7 +32,16 @@ namespace ArchipelagoMIUU.Patches
             //Send goal on last level
             if(level.id == LocationHandler.endLocations[LocationHandler.finalLevel])
             {
-                ConnectHandler.SendCompletion();
+                float targetTime = float.PositiveInfinity;
+                if (LocationHandler.lowestMedalType == 1)
+                    targetTime = level.SilverTime;
+                else if (LocationHandler.lowestMedalType == 2)
+                    targetTime = level.GoldTime;
+                else if (LocationHandler.lowestMedalType == 3)
+                    targetTime = level.DiamondTime;
+
+                if (elapsedTime <= targetTime)
+                    ConnectHandler.SendCompletion();
             }
         }
     }
