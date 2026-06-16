@@ -27,27 +27,27 @@ namespace ArchipelagoMIUU.Patches
         {
             List<HighScorePanel.HighScore> list = new List<HighScorePanel.HighScore>();
             int[] levelLogic = LocationHandler.internalLevelLogic[level.id];
-            if(levelLogic[0] != -1 && levelLogic[0] <= LocationHandler.medalTypes)
+            if((levelLogic[LocationHandler.medalTypes] & 1) != 0)
             {
                 list.Add(new HighScorePanel.HighScore("Super Jump", "NA_LOCAL_ID", 0.0f, "", null, false));
             }
-            if(levelLogic[1] != -1 && levelLogic[1] <= LocationHandler.medalTypes)
+            if((levelLogic[LocationHandler.medalTypes] & 2) != 0)
             {
                 list.Add(new HighScorePanel.HighScore("Boost", "NA_LOCAL_ID", 0.0f, "", null, false));
             }
-            if(levelLogic[2] != -1 && levelLogic[2] <= LocationHandler.medalTypes)
+            if((levelLogic[LocationHandler.medalTypes] & 4) != 0)
             {
                 list.Add(new HighScorePanel.HighScore("Feather Fall", "NA_LOCAL_ID", 0.0f, "", null, false));
             }
-            if(levelLogic[3] != -1 && levelLogic[3] <= LocationHandler.medalTypes)
+            if((levelLogic[LocationHandler.medalTypes] & 8) != 0)
             {
                 list.Add(new HighScorePanel.HighScore("Gravity Surfaces", "NA_LOCAL_ID", 0.0f, "", null, false));
             }
-            if(levelLogic[4] != -1 && levelLogic[4] <= LocationHandler.medalTypes)
+            if((levelLogic[LocationHandler.medalTypes] & 16) != 0)
             {
                 list.Add(new HighScorePanel.HighScore("Bounce Surfaces", "NA_LOCAL_ID", 0.0f, "", null, false));
             }
-            if(levelLogic[5] != -1 && levelLogic[4] <= LocationHandler.medalTypes)
+            if((levelLogic[LocationHandler.medalTypes] & 32) != 0)
             {
                 list.Add(new HighScorePanel.HighScore("Blue Moving Platforms", "NA_LOCAL_ID", 0.0f, "", null, false));
             }
