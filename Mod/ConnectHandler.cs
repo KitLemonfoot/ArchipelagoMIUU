@@ -56,7 +56,7 @@ namespace ArchipelagoMIUU
 				Authenticated = true;
 
 				ItemHandler.wipeItems();
-				flushItems();
+				//flushItems();
 				Session.Items.ItemReceived += ItemReceived;
 
 				//Push locations
@@ -99,6 +99,9 @@ namespace ArchipelagoMIUU
 
 				MiscHandler.SetConnectString("Connected to " + APserver);
 				ItemHandler.calculateRequiredMedals();
+
+				MiscHandler.Log("Current Completion Medals: " + ItemHandler.completionMedals);
+				MiscHandler.Log("Current Gold Completion Medals: " + ItemHandler.goldCompletionMedals);
 
 				MiscHandler.Log("Successfully set up a connection to Archipelago. Let's play!");
 			}
