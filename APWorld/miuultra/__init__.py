@@ -28,7 +28,7 @@ class MIUUltraLocation(Location):
 
 class MIUUltraWorld(World):
     """
-    Marble It Up! Ultra is a marble platforming game made by the minds behind the Marble Blast series. 
+    Marble It Up! Ultra is a marble platforming game made by the minds behind the Marble Blast series.
     Roll through an extensive single-player campaign filled with dangerous obstacles, mind-bending paths, shifting gravity, bouncy floors, and potent power-ups.
     """
 
@@ -56,7 +56,7 @@ class MIUUltraWorld(World):
         id = item_id - base_id
         classification = item_list[id].classification
         return MIUUltraItem(name, classification, item_id, self.player)
-    
+
     def create_regions(self):
 
         player = self.player
@@ -168,4 +168,3 @@ class MIUUltraWorld(World):
             "death_link_amnesty": self.options.death_link_amnesty.value
         }
         return slot_data
-

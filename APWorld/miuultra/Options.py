@@ -128,7 +128,7 @@ class MIUUltraOptions(PerGameCommonOptions):
     trap_percent: TrapFillPercentage
     addtimetrap_weight: AddTimeTrapWeight
     cosmetictrap_weight: CosmeticShuffleTrapWeight
-    
+
 
 miuu_option_groups = [
     OptionGroup("Chapter Settings", [
