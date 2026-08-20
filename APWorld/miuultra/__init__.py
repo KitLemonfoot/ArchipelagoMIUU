@@ -46,10 +46,13 @@ class MIUUltraWorld(World):
         self.game_id_to_long: Dict[str, int] = {}
 
     def generate_early(self) -> None:
-        # Bonus arc + normal difficulty = 33% failed generation rate. Sorry.
-        if self.options.medal_types.value < 2 and self.options.bonus_arc_chapters > 0:
-            logging.warning(f"Player {self.player_name} tried to play with Bonus Arc chapters without adequate medal requirements. Disabling.")
-            self.options.bonus_arc_chapters.value = 0
+        # Make sure enough chapters are selected in the chosen goal arc(s)
+        if self.options.goal_arc.value in [0, 2] and self.options.ultra_arc_chapters.value < 3:
+            logging.warning(f"Player {self.player_name} tried to have an Ultra Arc goal without adequate chapters. Enabling enough chapters.")
+            self.options.ultra_arc_chapters.value = 3
+        if self.options.goal_arc.value in [1, 2] and self.options.bonus_arc_chapters.value < 2:
+            logging.warning(f"Player {self.player_name} tried to have a Bonus Arc goal without adequate chapters. Enabling enough chapters.")
+            self.options.bonus_arc_chapters.value = 2
 
     def create_item(self, name:str) -> MIUUltraItem:
         item_id: int = self.item_name_to_id[name]
@@ -76,16 +79,31 @@ class MIUUltraWorld(World):
             self.set_rule(location, loc.logic)
             region.locations.append(location)
 
-        if self.options.final_chapter.value == 0:
-            victory = self.get_location("Overclocked Complete")
-        if self.options.final_chapter.value == 1:
-            victory = self.get_location("Citadel Complete")
-        if self.options.final_chapter.value == 2:
-            victory = self.get_location("Mobius Madness Complete")
-        if self.options.final_chapter.value == 3:
-            victory = self.get_location("Apogee Complete")
-        victory.place_locked_item(self.create_item("Final Level Complete"))
-        multiworld.completion_condition[player] = lambda state: state.has("Final Level Complete", player)
+        goal_items = []
+
+        if self.options.goal_arc.value in [0, 2]:
+            if self.options.ultra_arc_chapters.value == 3:
+                ultra_victory = self.get_location("Overclocked Complete")
+            if self.options.ultra_arc_chapters.value == 4:
+                ultra_victory = self.get_location("Citadel Complete")
+            if self.options.ultra_arc_chapters.value == 5:
+                ultra_victory = self.get_location("Mobius Madness Complete")
+            if self.options.ultra_arc_chapters.value == 6:
+                ultra_victory = self.get_location("Apogee Complete")
+            ultra_victory.place_locked_item(self.create_item("Ultra Arc Complete"))
+            goal_items.append("Ultra Arc Complete")
+
+        if self.options.goal_arc.value in [1, 2]:
+            if self.options.bonus_arc_chapters.value == 2:
+                bonus_victory = self.get_location("The Pit of Despair Complete")
+            if self.options.bonus_arc_chapters.value == 3:
+                bonus_victory = self.get_location("Zenith Complete")
+            if self.options.bonus_arc_chapters.value == 4:
+                bonus_victory = self.get_location("Stratosphere Complete")
+            bonus_victory.place_locked_item(self.create_item("Bonus Arc Complete"))
+            goal_items.append("Bonus Arc Complete")
+
+        multiworld.completion_condition[player] = lambda state: state.has_all(goal_items, player)
 
     def create_items(self):
         pool=[]
@@ -100,9 +118,10 @@ class MIUUltraWorld(World):
             pool.append(self.create_item(item.name))
 
         # Handle adding completion medals.
-        medals = 5 + ((self.options.final_chapter.value+1)*self.options.medals_per_chapter)
-        for _ in range(medals):
-            pool.append(self.create_item("Completion Medal"))
+        if self.options.ultra_arc_chapters.value > 0:
+            medals = 5 + ((self.options.ultra_arc_chapters.value - 1) * self.options.medals_per_chapter)
+            for _ in range(medals):
+                pool.append(self.create_item("Completion Medal"))
 
         # Handle adding gold medals.
         if self.options.bonus_arc_chapters > 0:
@@ -111,31 +130,32 @@ class MIUUltraWorld(World):
                 pool.append(self.create_item("Gold Completion Medal"))
 
         #Handle adding extra medals.
-        extraMedals = self.options.extra_medals.value * (self.options.final_chapter.value+3)
-        remaining = len(self.multiworld.get_unfilled_locations(self.player)) - len(pool)
-        if remaining < extraMedals:
-            logging.warning(f"Player {self.player_name} had more extra medals defined in the YAML ({extraMedals}) than remaining available locations ({remaining}). Reducing.")
-            extraMedals = remaining
-        for _ in range(extraMedals):
-            pool.append(self.create_item("Completion Medal"))
-
-        #Handle adding extra gold medals.
-        extraGold = self.options.extra_medals.value * self.options.bonus_arc_chapters.value
-        if(extraGold>0):
+        extraMedals = self.options.extra_medals.value * self.options.ultra_arc_chapters.value
+        if extraMedals > 0:
             remaining = len(self.multiworld.get_unfilled_locations(self.player)) - len(pool)
             if remaining < extraMedals:
                 logging.warning(f"Player {self.player_name} had more extra medals defined in the YAML ({extraMedals}) than remaining available locations ({remaining}). Reducing.")
                 extraMedals = remaining
+            for _ in range(extraMedals):
+                pool.append(self.create_item("Completion Medal"))
+
+        #Handle adding extra gold medals.
+        extraGold = self.options.extra_medals.value * self.options.bonus_arc_chapters.value
+        if extraGold > 0:
+            remaining = len(self.multiworld.get_unfilled_locations(self.player)) - len(pool)
+            if remaining < extraGold:
+                logging.warning(f"Player {self.player_name} had more extra medals defined in the YAML ({extraGold}) than remaining available locations ({remaining}). Reducing.")
+                extraGold = remaining
             for _ in range(extraGold):
                 pool.append(self.create_item("Gold Completion Medal"))
 
         # Handle junk items.
         junk = len(self.multiworld.get_unfilled_locations(self.player)) - len(pool)
         trap: int = round(junk * (self.options.trap_percent / 100))
-        filler = junk - trap
         #Check weights.
         if(self.options.addtimetrap_weight + self.options.cosmetictrap_weight == 0):
             trap = 0
+        filler = junk - trap
         #Traps
         for _ in range(trap):
             pool.append(self.create_item(self.get_trap_name()))
@@ -160,7 +180,8 @@ class MIUUltraWorld(World):
             "locations": self.game_id_to_long,
             "MedalsPerChapter": self.options.medals_per_chapter.value,
             "MedalTypes": self.options.medal_types.value,
-            "FinalChapter": self.options.final_chapter.value,
+            "GoalArc": self.options.goal_arc.value,
+            "UltraArcChapters": self.options.ultra_arc_chapters.value,
             "BonusArcChapters": self.options.bonus_arc_chapters.value,
             "EnableBlast": bool(self.options.enable_blast.value),
             "Treasureboxsanity": bool(self.options.treasureboxsanity.value),

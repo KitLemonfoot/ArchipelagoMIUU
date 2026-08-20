@@ -41,5 +41,6 @@ item_list: List[MIUUltraItem] = [
     MIUUltraItem("Time Add Trap", ItemClassification.trap, ItemType.Trap),
     MIUUltraItem("Cosmetic Shuffle Trap", ItemClassification.trap, ItemType.Trap),
 
-    MIUUltraItem("Final Level Complete", ItemClassification.progression_skip_balancing, ItemType.End),
+    MIUUltraItem("Ultra Arc Complete", ItemClassification.progression_skip_balancing, ItemType.End),
+    MIUUltraItem("Bonus Arc Complete", ItemClassification.progression_skip_balancing, ItemType.End),
 ]

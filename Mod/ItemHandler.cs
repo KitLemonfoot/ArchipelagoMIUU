@@ -92,25 +92,30 @@ namespace ArchipelagoMIUU
         {
             //Calculate the required medals.
             //Bit of a messy way to do it, but it works.
-            string[] chapters = {"c3", "c4", "c5", "c6"};
+            string[] chapters = {"c1", "c2", "c3", "c4", "c5", "c6"};
             for(int i = 0; i<chapters.Length; i++)
             {
-                if (i > LocationHandler.finalLevel)
+                if (i + 1 > LocationHandler.ultraArcChapters)
                 {
                     requiredMedals[chapters[i]] = -1;
                     continue;
                 }
-                requiredMedals[chapters[i]] = 5+(medalsPerChapter*(i+1));
+                if (i == 0)
+                {
+                    requiredMedals[chapters[i]] = 0;
+                    continue;
+                }
+                requiredMedals[chapters[i]] = 5 + (medalsPerChapter * (i - 1));
             }
             string[] bonusarc = {"c1a", "c2a", "c3a", "c4a"};
             for(int i = 0; i<bonusarc.Length; i++)
             {
-                if (i + 1 > LocationHandler.bonusArcLevel)
+                if (i + 1 > LocationHandler.bonusArcChapters)
                 {
                     requiredMedals[bonusarc[i]] = -1;
                     continue;
                 }
-                requiredMedals[bonusarc[i]] = (i+1)*medalsPerChapter;
+                requiredMedals[bonusarc[i]] = i * medalsPerChapter;
             }
         }
 

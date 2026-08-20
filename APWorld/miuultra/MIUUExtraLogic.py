@@ -22,9 +22,9 @@ class MIUUExtraLogic:
         return Has("Completion Medal", count=medals)
 
     def has_gold_medals(self, chapternumber) -> Rule:
-        if not self.options:
+        if not self.options or chapternumber < 2:
             return True_()
-        goldmedals = self.options.medals_per_chapter.value * chapternumber
+        goldmedals = self.options.medals_per_chapter.value * (chapternumber - 1)
         return Has("Gold Completion Medal", count=goldmedals)
 
     def has_all_gems(self, levelname, gemamount) -> Rule:

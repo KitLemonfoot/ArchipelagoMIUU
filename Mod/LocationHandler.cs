@@ -149,13 +149,15 @@ namespace ArchipelagoMIUU
             {"stratosphere", [-1, 0, 0, 0, -1, 0]}
         };
 
-        public static int finalLevel = 0;
-        public static int bonusArcLevel = 0;
+        public static int goalArc = 0;
+        public static int ultraArcChapters = 0;
+        public static int bonusArcChapters = 0;
 
         public static int medalTypes = 0;
 
         public static bool treasureboxsanity = false;
-        public static string[] endLocations = {"overclocked_update", "citadel", "mobiusmadness_v2", "apogee_v2"};
+        public static string[] ultraEndLocations = {"leaf_on_the_wind", "steppingstones_update", "overclocked_update", "citadel", "mobiusmadness_v2", "apogee_v2"};
+        public static string[] bonusEndLocations = {"platinum_playground_mayhem", "pitofdespair", "zenith", "stratosphere"};
         public static Action<bool> s => SentCheck;
 
         public static void CheckLocation(string loc)
@@ -189,6 +191,20 @@ namespace ArchipelagoMIUU
                 return false;
             }
             return ConnectHandler.Session.Locations.AllLocationsChecked.Contains(locations[loc]);
+        }
+
+        public static void CheckForCompletion()
+        {
+            //Send goal on last level
+            bool ultraCompleted = true;
+            if (goalArc == 0 || goalArc == 2)
+                ultraCompleted = isLocationChecked(ultraEndLocations[ultraArcChapters - 1] + "-c");
+            bool bonusCompleted = true;
+            if (goalArc == 1 || goalArc == 2)
+                bonusCompleted = isLocationChecked(bonusEndLocations[bonusArcChapters - 1] + "-c");
+
+            if (ultraCompleted && bonusCompleted)
+                ConnectHandler.SendCompletion();
         }
 
         public static void SentCheck(bool t)
