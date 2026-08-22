@@ -29,7 +29,6 @@ namespace ArchipelagoMIUU.Patches
             {
                 LocationHandler.CheckLocation(level.id+"-d");
             }
-            LocationHandler.CheckForCompletion();
         }
     }
 

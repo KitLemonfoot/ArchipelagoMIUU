@@ -36,6 +36,9 @@ namespace ArchipelagoMIUU
           {"c4a", -1},
         };
 
+        public static bool ultraArcComplete;
+        public static bool bonusArcComplete;
+
         public static void recieveItem(string itemName, string sender, string colorData)
         {
             if (powerupFlags.ContainsKey(itemName))
@@ -59,6 +62,8 @@ namespace ArchipelagoMIUU
                 case "5 Second Time Freeze": MiscHandler.doTimeTravelItem();break;
                 case "Time Add Trap": MiscHandler.doTimeAddTrap();break;
                 case "Cosmetic Shuffle Trap": MiscHandler.doCosmeticShuffleTrap();break;
+                case "Ultra Arc Complete": ultraArcComplete = true; checkForCompletion(); break;
+                case "Bonus Arc Complete": bonusArcComplete = true; checkForCompletion(); break;
                 default: MiscHandler.Log("Invalid item "+itemName+", ignoring.");break;
             }
             if (Notification.instance != null)
@@ -142,8 +147,15 @@ namespace ArchipelagoMIUU
             }
             completionMedals = 0;
             goldCompletionMedals = 0;
+            ultraArcComplete = false;
+            bonusArcComplete = false;
         }
 
+        public static void checkForCompletion()
+        {
+            if (ultraArcComplete && bonusArcComplete)
+                ConnectHandler.SendCompletion();
+        }
     }
 
 
