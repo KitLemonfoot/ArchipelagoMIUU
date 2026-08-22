@@ -15,23 +15,16 @@ namespace ArchipelagoMIUU.Patches
             {
                 return true;
             }
-            __result = LevelMedal.None;
-            if (LocationHandler.isLocationChecked(__instance.id + "-c"))
-            {
+            if (!LocationHandler.isLocationChecked(__instance.id + "-c"))
+                __result = LevelMedal.None;
+            else if (LocationHandler.medalTypes >= 1 && !LocationHandler.isLocationChecked(__instance.id + "-s"))
                 __result = LevelMedal.Bronze;
-            }
-            if (LocationHandler.isLocationChecked(__instance.id + "-s"))
-            {
+            else if (LocationHandler.medalTypes >= 2 && !LocationHandler.isLocationChecked(__instance.id + "-g"))
                 __result = LevelMedal.Silver;
-            }
-            if (LocationHandler.isLocationChecked(__instance.id + "-g"))
-            {
+            else if (LocationHandler.medalTypes >= 3 && !LocationHandler.isLocationChecked(__instance.id + "-d"))
                 __result = LevelMedal.Gold;
-            }
-            if (LocationHandler.isLocationChecked(__instance.id + "-d"))
-            {
-                __result = LevelMedal.Diamond;
-            }
+            else
+                __result = (LevelMedal)(LocationHandler.medalTypes + 1);
             return false;
         }
     }
