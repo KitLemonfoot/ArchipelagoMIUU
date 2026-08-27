@@ -37,13 +37,13 @@ You will need the following:
 - The latest version of [Marble It Up! Ultra, downloaded from Steam](https://store.steampowered.com/app/864060/Marble_It_Up_Ultra/)
 - The Archipelago software from [their Releases page](https://github.com/ArchipelagoMW/Archipelago/releases/)
 - The APWorld and mod files from our releases page
-- MIUU Mod Loader from [thearst3rd's Releases page](https://git.thearst3rd.com/thearst3rd/miuu-mod-loader/releases/latest)
-- MIUU Console Unlocker from [thearst3rd's Releases page](https://git.thearst3rd.com/thearst3rd/miuu-console-unlocker/releases/latest)
+- MIUU Mod Loader from [thearst3rd's Releases page](https://codeberg.org/thearst3rd/miuu-mod-loader/releases/latest)
+- MIUU Console Unlocker from [thearst3rd's Releases page](https://codeberg.org/thearst3rd/miuu-console-unlocker/releases/latest)
 
 ### Installing
 1. Navigate to Marble It Up! Ultra's local file directory. This can be found by right-clicking on the game in your Steam Library, selecting *Manage*, then selecting *Browse Local Files*.
-2. Install [MIUU Mod Loader](https://git.thearst3rd.com/thearst3rd/miuu-mod-loader) to your copy of Marble It Up! Ultra if it's not already installed.
-3. Install [MIUU Console Unlocker](https://git.thearst3rd.com/thearst3rd/miuu-console-unlocker) if it's not already installed.
+2. Install [MIUU Mod Loader](https://codeberg.org/thearst3rd/miuu-mod-loader) to your copy of Marble It Up! Ultra if it's not already installed.
+3. Install [MIUU Console Unlocker](https://codeberg.org/thearst3rd/miuu-console-unlocker) if it's not already installed.
 4. Extract the contents of `ArchipelagoMIUU_vX.Y.Z.zip` to the `Mods` folder.
 
 ### APWorld Setup
@@ -68,7 +68,7 @@ You will need the latest version of the [.NET SDK](https://dotnet.microsoft.com/
 1. In the `Mod` folder, copy the file `UserProperties.xml.template` as `UserProperties.xml` and edit it as following:
 	- Set `GameDir` to be a path pointing to your Marble It Up! Ultra game installation
 	- If necessary, change `GameDataDir` to point to the `_Data` folder in your Marble It Up! Ultra installation. Required on Linux
-2. Ensure [MIUU Mod Loader](https://git.thearst3rd.com/thearst3rd/miuu-mod-loader) is installed so that the Harmony dll can be found.
+2. Ensure [MIUU Mod Loader](https://codeberg.org/thearst3rd/miuu-mod-loader) is installed so that the Harmony dll can be found.
 3. Build the project with `dotnet build --configuration Release`. This will build the mod and copy it and its dependencies into the `Mods` folder of your MIUU install!
 
 ## Todo
