@@ -29,11 +29,6 @@ namespace ArchipelagoMIUU.Patches
             {
                 LocationHandler.CheckLocation(level.id+"-d");
             }
-            //Send goal on last level
-            if(level.id == LocationHandler.endLocations[LocationHandler.finalLevel])
-            {
-                ConnectHandler.SendCompletion();
-            }
         }
     }
 

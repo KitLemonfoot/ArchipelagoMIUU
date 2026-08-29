@@ -152,13 +152,13 @@ level_info_dict = {
 #Levels with no starting logic.
 logicless_base_complete_levels = [
     "learning_to_roll_update", "learning_to_turn_update", "bunny_slope", "fsa_update", "treasure_update", "frosty_update", "leaf_on_the_wind",
-    "duality_v2", "greatWall", "carom_v2", "rush_hour", "intothearctic_v2", "wave_pool_update", "bigeasy", "transit_mayhem", 
-    "speedball_v2", "outskirts", 
-    "aqueduct", "gearing_up", "acrophobia", "rime", "cogValley", 
+    "duality_v2", "greatWall", "carom_v2", "rush_hour", "intothearctic_v2", "wave_pool_update", "bigeasy", "transit_mayhem",
+    "speedball_v2", "outskirts",
+    "aqueduct", "gearing_up", "acrophobia", "rime", "cogValley",
     "newtonscradle", "gearheart", "diamond", "shift",
     "amethyst_v2", "isaacs_apple", "vertigo_mayhem",
-    "rosenbridge_update", "elevatoraction", 
-    "bumperinvasion", "runout", 
+    "rosenbridge_update", "elevatoraction",
+    "bumperinvasion", "runout",
     "contraption", "prime_v2",
     "olympus", "headintheclouds_mayhem", "centripitalforce", "slickshtick"
 ]

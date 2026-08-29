@@ -71,10 +71,16 @@ namespace ArchipelagoMIUU
 
 				//Get YAML settings.
 				LocationHandler.medalTypes = int.Parse(loginSuccess.SlotData["MedalTypes"].ToString());
-				LocationHandler.finalLevel = int.Parse(loginSuccess.SlotData["FinalChapter"].ToString());
-				LocationHandler.bonusArcLevel = int.Parse(loginSuccess.SlotData["BonusArcChapters"].ToString());
+				LocationHandler.goalArc = int.Parse(loginSuccess.SlotData["GoalArc"].ToString());
+				LocationHandler.ultraArcChapters = int.Parse(loginSuccess.SlotData["UltraArcChapters"].ToString());
+				LocationHandler.bonusArcChapters = int.Parse(loginSuccess.SlotData["BonusArcChapters"].ToString());
 				ItemHandler.medalsPerChapter = int.Parse(loginSuccess.SlotData["MedalsPerChapter"].ToString());
 				LocationHandler.treasureboxsanity = bool.Parse(loginSuccess.SlotData["Treasureboxsanity"].ToString());
+
+				if (LocationHandler.goalArc == 0)
+					ItemHandler.bonusArcComplete = true;
+				if (LocationHandler.goalArc == 1)
+					ItemHandler.ultraArcComplete = true;
 
 				//Setup deathlink
 				doingDeathlinkYaml = bool.Parse(loginSuccess.SlotData["death_link"].ToString());

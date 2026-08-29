@@ -22,7 +22,7 @@ def get_location_data(player: Optional[int], options: Optional[MIUUltraOptions])
         level: MIUULevel = level_info_dict[lvl]
 
         #Should handle both arcs
-        if (not options) or (level.homeRegion.short_name.startswith("ch") and options.final_chapter+3 >= level.homeRegion.chapter_number) or (level.homeRegion.short_name.startswith("ba") and options.bonus_arc_chapters >= level.homeRegion.chapter_number):
+        if (not options) or (level.homeRegion.short_name.startswith("ch") and options.ultra_arc_chapters >= level.homeRegion.chapter_number) or (level.homeRegion.short_name.startswith("ba") and options.bonus_arc_chapters >= level.homeRegion.chapter_number):
             #Base
             if(level.homeRegion.short_name.startswith("ch")):
                 medalLogic = logic.has_medals(level.homeRegion.chapter_number)

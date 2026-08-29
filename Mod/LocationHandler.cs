@@ -149,13 +149,13 @@ namespace ArchipelagoMIUU
             {"stratosphere", [-1, 0, 0, 0, -1, 0]}
         };
 
-        public static int finalLevel = 0;
-        public static int bonusArcLevel = 0;
+        public static int goalArc = 0;
+        public static int ultraArcChapters = 0;
+        public static int bonusArcChapters = 0;
 
         public static int medalTypes = 0;
 
         public static bool treasureboxsanity = false;
-        public static string[] endLocations = {"overclocked_update", "citadel", "mobiusmadness_v2", "apogee_v2"};
         public static Action<bool> s => SentCheck;
 
         public static void CheckLocation(string loc)
