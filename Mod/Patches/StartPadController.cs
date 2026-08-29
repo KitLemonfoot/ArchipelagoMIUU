@@ -1,6 +1,7 @@
 using HarmonyLib;
 using UnityEngine;
 using MIU;
+using System.Collections.Generic;
 
 namespace ArchipelagoMIUU.Patches
 {
@@ -14,11 +15,23 @@ namespace ArchipelagoMIUU.Patches
             {
                 MiscHandler.disallowDeathlink = false;
                 //Handle logical complete message
-                if (!ConnectHandler.Authenticated)
-                {
-                    return;
+                int medalType = ConnectHandler.Authenticated ? LocationHandler.medalTypes : 3;
+                int hardestUnachievableMedal = -1;
+                bool canGetMedal = true;
+                for (int i = 0; i <= medalType; i++) {
+                    canGetMedal = ItemHandler.canLogicallyCompleteLevel(GlobalContext.CurrentLevel.id, i);
+                    if (!canGetMedal)
+                    {
+                        hardestUnachievableMedal = i;
+                        break;
+                    }
                 }
-                if (!ItemHandler.canLogicallyCompleteLevel(GlobalContext.CurrentLevel.id))
+                bool canGetTreasure;
+                if (!LocationHandler.treasureboxsanity && ConnectHandler.Authenticated)
+                    canGetTreasure = true;
+                else
+                    canGetTreasure = ItemHandler.canLogicallyCompleteLevel(GlobalContext.CurrentLevel.id, 4);
+                if (!canGetMedal || !canGetTreasure)
                 {
                     MarbleController[] array = GameProcess.ServerProcess.FindObjectsOfType<MarbleController>();
                     if (array.Length == 0)
@@ -26,7 +39,13 @@ namespace ArchipelagoMIUU.Patches
                         MiscHandler.Log("Failed to find any marbles to tell about no logic.");
                         return;
                     }
-                    GamePlayManager.Get().SetTutorial("You may not have all the required items to beat this level...", null);
+                    List<string> cantGet = [];
+                    if (!canGetMedal)
+                        cantGet.Add(HighScorePanelItemDisplay.GetMedalTypeName(hardestUnachievableMedal));
+                    if (!canGetTreasure)
+                        cantGet.Add("treasure box");
+
+                    GamePlayManager.Get().SetTutorial("You may not have all the required items to get the " + string.Join(" or ", cantGet) + "...", null);
                     foreach(MarbleController marble in array)
                     {
                         float expiry = Time.time + 5f;

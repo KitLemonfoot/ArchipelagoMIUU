@@ -114,13 +114,13 @@ namespace ArchipelagoMIUU
             }
         }
 
-        public static bool canLogicallyCompleteLevel(string id)
+        public static bool canLogicallyCompleteLevel(string id, int medalType)
         {
             int[] levelLogic = LocationHandler.internalLevelLogic[id];
             bool[] items = powerupFlags.Values.ToArray<bool>();
             for(int i=0; i<items.Length-1; i++)
             {
-                if(levelLogic[i] != -1 && levelLogic[i] <= LocationHandler.medalTypes && !items[i])
+                if((levelLogic[medalType] & (1 << i)) != 0 && !items[i])
                 {
                     return false;
                 }

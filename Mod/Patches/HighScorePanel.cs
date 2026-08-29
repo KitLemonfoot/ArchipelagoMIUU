@@ -9,13 +9,48 @@ using MIU;
 namespace ArchipelagoMIUU.Patches
 {
     //Highscore panel modifying.
-    [HarmonyPatch(typeof(HighScorePanel), "Awake")]
-    class HighScorePanel_Awake_Patch
+    internal class HighScorePanelItemDisplay
     {
-        public static void Postfix(HighScorePanel __instance)
+        public static int SelectedMedalType;
+        public static string SelectedLevel;
+
+        public static void SetupPanel(HighScorePanel panel)
         {
-            __instance.ScoreHeader.gameObject.transform.GetChild(1).gameObject.SetActive(false);
-            __instance.ScoreHeader.gameObject.transform.GetChild(2).gameObject.SetActive(false);
+            List<HighScorePanel.HighScore> list = [];
+            int[] levelLogic = LocationHandler.internalLevelLogic[SelectedLevel];
+
+            if ((levelLogic[SelectedMedalType] & 1) != 0)
+                list.Add(new HighScorePanel.HighScore("Super Jump", "NA_LOCAL_ID", 0.0f, "", null, false));
+            if ((levelLogic[SelectedMedalType] & 2) != 0)
+                list.Add(new HighScorePanel.HighScore("Boost", "NA_LOCAL_ID", 0.0f, "", null, false));
+            if ((levelLogic[SelectedMedalType] & 4) != 0)
+                list.Add(new HighScorePanel.HighScore("Feather Fall", "NA_LOCAL_ID", 0.0f, "", null, false));
+            if ((levelLogic[SelectedMedalType] & 8) != 0)
+                list.Add(new HighScorePanel.HighScore("Gravity Surfaces", "NA_LOCAL_ID", 0.0f, "", null, false));
+            if ((levelLogic[SelectedMedalType] & 16) != 0)
+                list.Add(new HighScorePanel.HighScore("Bounce Surfaces", "NA_LOCAL_ID", 0.0f, "", null, false));
+            if ((levelLogic[SelectedMedalType] & 32) != 0)
+                list.Add(new HighScorePanel.HighScore("Blue Moving Platforms", "NA_LOCAL_ID", 0.0f, "", null, false));
+
+            if (list.Count == 0)
+                list.Add(new HighScorePanel.HighScore("No items required", "NA_LOCAL_ID", 0.0f, "", null, false));
+
+            panel.localScores = list;
+        }
+
+        public static string GetMedalTypeName(int medalType = -1)
+        {
+            if (medalType < 0)
+                medalType = SelectedMedalType;
+            return medalType switch
+            {
+                0 => "Bronze Medal",
+                1 => "Silver Medal",
+                2 => "Gold Medal",
+                3 => "Diamond Medal",
+                4 => "Treasure Box",
+                _ => "Error (please report!)",
+            };
         }
     }
 
@@ -25,33 +60,10 @@ namespace ArchipelagoMIUU.Patches
     {
         public static bool Prefix(HighScorePanel __instance, MarbleLevel level)
         {
-            List<HighScorePanel.HighScore> list = new List<HighScorePanel.HighScore>();
-            int[] levelLogic = LocationHandler.internalLevelLogic[level.id];
-            if(levelLogic[0] != -1 && levelLogic[0] <= LocationHandler.medalTypes)
-            {
-                list.Add(new HighScorePanel.HighScore("Super Jump", "NA_LOCAL_ID", 0.0f, "", null, false));
-            }
-            if(levelLogic[1] != -1 && levelLogic[1] <= LocationHandler.medalTypes)
-            {
-                list.Add(new HighScorePanel.HighScore("Boost", "NA_LOCAL_ID", 0.0f, "", null, false));
-            }
-            if(levelLogic[2] != -1 && levelLogic[2] <= LocationHandler.medalTypes)
-            {
-                list.Add(new HighScorePanel.HighScore("Feather Fall", "NA_LOCAL_ID", 0.0f, "", null, false));
-            }
-            if(levelLogic[3] != -1 && levelLogic[3] <= LocationHandler.medalTypes)
-            {
-                list.Add(new HighScorePanel.HighScore("Gravity Surfaces", "NA_LOCAL_ID", 0.0f, "", null, false));
-            }
-            if(levelLogic[4] != -1 && levelLogic[4] <= LocationHandler.medalTypes)
-            {
-                list.Add(new HighScorePanel.HighScore("Bounce Surfaces", "NA_LOCAL_ID", 0.0f, "", null, false));
-            }
-            if(levelLogic[5] != -1 && levelLogic[4] <= LocationHandler.medalTypes)
-            {
-                list.Add(new HighScorePanel.HighScore("Blue Moving Platforms", "NA_LOCAL_ID", 0.0f, "", null, false));
-            }
-            __instance.localScores = list;
+            HighScorePanelItemDisplay.SelectedMedalType = ConnectHandler.Authenticated ? LocationHandler.medalTypes : 3;
+            HighScorePanelItemDisplay.SelectedLevel = level.id;
+            HighScorePanelItemDisplay.SetupPanel(__instance);
+
             //Perform original code delegate
             GraphicRaycaster[] componentsInChildren = __instance.GetComponentsInChildren<GraphicRaycaster>();
             for(int i = 0; i< componentsInChildren.Length; i++)
@@ -68,7 +80,7 @@ namespace ArchipelagoMIUU.Patches
     {
         public static void Postfix(ref string __result)
         {
-            __result = "Required Items for Completion";
+            __result = HighScorePanelItemDisplay.GetMedalTypeName();
         }
     }
 
@@ -76,8 +88,20 @@ namespace ArchipelagoMIUU.Patches
     [HarmonyPatch(typeof(HighScorePanel), "NextHSMode")]
     class HighScorePanel_NextHSMode_Patch
     {
-        public static bool Prefix()
+        public static bool Prefix(HighScorePanel __instance)
         {
+            int medalType = ConnectHandler.Authenticated ? LocationHandler.medalTypes : 3;
+            HighScorePanelItemDisplay.SelectedMedalType++;
+            if (HighScorePanelItemDisplay.SelectedMedalType > medalType)
+            {
+                if ((LocationHandler.treasureboxsanity || !ConnectHandler.Authenticated) && HighScorePanelItemDisplay.SelectedMedalType <= 4)
+                    HighScorePanelItemDisplay.SelectedMedalType = 4;
+                else
+                    HighScorePanelItemDisplay.SelectedMedalType = 0;
+            }
+            HighScorePanelItemDisplay.SetupPanel(__instance);
+            __instance.RefreshScores();
+            __instance.scoreTypeText.text = HighScorePanelItemDisplay.GetMedalTypeName();
             return false;
         }
     }
@@ -85,8 +109,24 @@ namespace ArchipelagoMIUU.Patches
     [HarmonyPatch(typeof(HighScorePanel), "PrevHSMode")]
     class HighScorePanel_PrevHSMode_Patch
     {
-        public static bool Prefix()
+        public static bool Prefix(HighScorePanel __instance)
         {
+            int medalType = ConnectHandler.Authenticated ? LocationHandler.medalTypes : 3;
+            HighScorePanelItemDisplay.SelectedMedalType--;
+            if (HighScorePanelItemDisplay.SelectedMedalType > medalType)
+            {
+                HighScorePanelItemDisplay.SelectedMedalType = medalType;
+            }
+            else if (HighScorePanelItemDisplay.SelectedMedalType < 0)
+            {
+                if (LocationHandler.treasureboxsanity || !ConnectHandler.Authenticated)
+                    HighScorePanelItemDisplay.SelectedMedalType = 4;
+                else
+                    HighScorePanelItemDisplay.SelectedMedalType = medalType;
+            }
+            HighScorePanelItemDisplay.SetupPanel(__instance);
+            __instance.RefreshScores();
+            __instance.scoreTypeText.text = HighScorePanelItemDisplay.GetMedalTypeName();
             return false;
         }
     }

@@ -117,14 +117,14 @@ namespace ArchipelagoMIUU
                 }
                 return output;
             }
-            string element = args[0];
+            string element = string.Join(" ", args);
             if (!ItemHandler.powerupFlags.ContainsKey(element))
             {
                 return "Item " + element + " is not a valid MIUU item.";
             }
             ItemHandler.powerupFlags[element] = !ItemHandler.powerupFlags[element];
             return "Element " + element + " availability has been set to " + ItemHandler.powerupFlags[element].ToString();
-            
+
         }
     }
 }
