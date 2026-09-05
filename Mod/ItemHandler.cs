@@ -120,7 +120,7 @@ namespace ArchipelagoMIUU
             bool[] items = powerupFlags.Values.ToArray<bool>();
             for(int i=0; i<items.Length-1; i++)
             {
-                if(levelLogic[i] != -1 && levelLogic[i] <= LocationHandler.medalTypes && !items[i])
+                if(levelLogic[i] != -1 && levelLogic[i] <= LocationHandler.highestMedalType && !items[i])
                 {
                     return false;
                 }

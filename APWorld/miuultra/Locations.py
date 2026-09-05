@@ -29,22 +29,26 @@ def get_location_data(player: Optional[int], options: Optional[MIUUltraOptions])
             else:
                 medalLogic = logic.has_gold_medals(level.homeRegion.chapter_number)
             lvlLogic = And(level.baseCompletionLogic, medalLogic)
-            locations.append(
-                MIUUltraLocation(level.name+" Complete", level.homeRegion, level.internalLevelId+"-c", lvlLogic)
-            )
+            # Bronze
+            if not options or "Bronze" in options.medal_types.value:
+                locations.append(
+                    MIUUltraLocation(level.name+" Complete", level.homeRegion, level.internalLevelId+"-c", lvlLogic)
+                )
             #Silver
-            if not options or options.medal_types>0:
+            if not options or "Silver" in options.medal_types.value:
                 lvlLogic = And(level.baseCompletionLogic, level.higherCompletionLogic, medalLogic)
                 locations.append(
                     MIUUltraLocation(level.name+" Silver Medal", level.homeRegion, level.internalLevelId+"-s", lvlLogic)
                 )
             #Gold
-            if not options or options.medal_types>1:
+            if not options or "Gold" in options.medal_types.value:
+                lvlLogic = And(level.baseCompletionLogic, level.higherCompletionLogic, medalLogic)
                 locations.append(
                     MIUUltraLocation(level.name+" Gold Medal", level.homeRegion, level.internalLevelId+"-g", lvlLogic)
                 )
             #Diamond
-            if not options or options.medal_types>2:
+            if not options or "Diamond" in options.medal_types.value:
+                lvlLogic = And(level.baseCompletionLogic, level.higherCompletionLogic, medalLogic)
                 locations.append(
                     MIUUltraLocation(level.name+" Diamond Medal", level.homeRegion, level.internalLevelId+"-d", lvlLogic)
                 )

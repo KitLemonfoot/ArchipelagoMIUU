@@ -152,7 +152,13 @@ namespace ArchipelagoMIUU
         public static int finalLevel = 0;
         public static int bonusArcLevel = 0;
 
-        public static int medalTypes = 0;
+        public static bool bronzeMedals = false;
+        public static bool silverMedals = false;
+        public static bool goldMedals = false;
+        public static bool diamondMedals = false;
+
+        public static int lowestMedalType = 0;
+        public static int highestMedalType = 0;
 
         public static bool treasureboxsanity = false;
         public static string[] endLocations = {"overclocked_update", "citadel", "mobiusmadness_v2", "apogee_v2"};

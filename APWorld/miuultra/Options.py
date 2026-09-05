@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from Options import Toggle, Choice, Range, DeathLink, PerGameCommonOptions, OptionGroup
+from Options import Toggle, Choice, Range, DeathLink, PerGameCommonOptions, OptionGroup, OptionSet
 
 class EnableBlast(Toggle):
     """
@@ -48,17 +48,28 @@ class ExtraMedals(Range):
     range_end = 5
     default = 3
 
-class MedalTypes(Choice):
+class MedalTypes(OptionSet):
     """
     Choose which types of level completions to count as checks.
-    Enabling a higher tier medal will also enable all tiers below it.
+    NOTE: At least one of the four medal checks must be enabled.
+
+    Available values:
+    - Bronze
+    - Silver
+    - Gold
+    - Diamond
     """
     display_name = "Medal Types"
-    option_normal = 0
-    option_silver = 1
-    option_gold = 2
-    option_diamond = 3
-    default = 1
+    valid_keys = {
+        "Bronze",
+        "Silver",
+        "Gold",
+        "Diamond",
+    }
+    default = {
+        "Bronze",
+        "Silver",
+    }
 
 class BonusArcChapters(Choice):
     """
@@ -128,7 +139,7 @@ class MIUUltraOptions(PerGameCommonOptions):
     trap_percent: TrapFillPercentage
     addtimetrap_weight: AddTimeTrapWeight
     cosmetictrap_weight: CosmeticShuffleTrapWeight
-    
+
 
 miuu_option_groups = [
     OptionGroup("Chapter Settings", [

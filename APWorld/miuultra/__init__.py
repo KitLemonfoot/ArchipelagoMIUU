@@ -28,7 +28,7 @@ class MIUUltraLocation(Location):
 
 class MIUUltraWorld(World):
     """
-    Marble It Up! Ultra is a marble platforming game made by the minds behind the Marble Blast series. 
+    Marble It Up! Ultra is a marble platforming game made by the minds behind the Marble Blast series.
     Roll through an extensive single-player campaign filled with dangerous obstacles, mind-bending paths, shifting gravity, bouncy floors, and potent power-ups.
     """
 
@@ -47,16 +47,19 @@ class MIUUltraWorld(World):
 
     def generate_early(self) -> None:
         # Bonus arc + normal difficulty = 33% failed generation rate. Sorry.
-        if self.options.medal_types.value < 2 and self.options.bonus_arc_chapters > 0:
+        if self.options.bonus_arc_chapters > 0 and not (("Gold" in self.options.medal_types.value) or ("Diamond" in self.options.medal_types.value)):
             logging.warning(f"Player {self.player_name} tried to play with Bonus Arc chapters without adequate medal requirements. Disabling.")
             self.options.bonus_arc_chapters.value = 0
+        if len(self.options.medal_types.value) == 0:
+            logging.warning(f"Player {self.player_name} did not enable any medal types! Enabling bronze medals.")
+            self.options.medal_types.value.add("Bronze")
 
     def create_item(self, name:str) -> MIUUltraItem:
         item_id: int = self.item_name_to_id[name]
         id = item_id - base_id
         classification = item_list[id].classification
         return MIUUltraItem(name, classification, item_id, self.player)
-    
+
     def create_regions(self):
 
         player = self.player
@@ -76,14 +79,24 @@ class MIUUltraWorld(World):
             self.set_rule(location, loc.logic)
             region.locations.append(location)
 
+        target = ""
+        if "Bronze" in self.options.medal_types.value:
+            target = " Complete"
+        elif "Silver" in self.options.medal_types.value:
+            target = " Silver Medal"
+        elif "Gold" in self.options.medal_types.value:
+            target = " Gold Medal"
+        else:
+            target = " Diamond Medal"
+
         if self.options.final_chapter.value == 0:
-            victory = self.get_location("Overclocked Complete")
+            victory = self.get_location("Overclocked" + target)
         if self.options.final_chapter.value == 1:
-            victory = self.get_location("Citadel Complete")
+            victory = self.get_location("Citadel" + target)
         if self.options.final_chapter.value == 2:
-            victory = self.get_location("Mobius Madness Complete")
+            victory = self.get_location("Mobius Madness" + target)
         if self.options.final_chapter.value == 3:
-            victory = self.get_location("Apogee Complete")
+            victory = self.get_location("Apogee" + target)
         victory.place_locked_item(self.create_item("Final Level Complete"))
         multiworld.completion_condition[player] = lambda state: state.has("Final Level Complete", player)
 
@@ -168,4 +181,3 @@ class MIUUltraWorld(World):
             "death_link_amnesty": self.options.death_link_amnesty.value
         }
         return slot_data
-
