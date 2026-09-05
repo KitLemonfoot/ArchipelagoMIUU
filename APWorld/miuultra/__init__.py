@@ -47,12 +47,12 @@ class MIUUltraWorld(World):
 
     def generate_early(self) -> None:
         # Bonus arc + normal difficulty = 33% failed generation rate. Sorry.
-        if self.options.bonus_arc_chapters > 0 and not (self.options.gold_medals.value or self.options.diamond_medals.value):
+        if self.options.bonus_arc_chapters > 0 and not (("Gold" in self.options.medal_types.value) or ("Diamond" in self.options.medal_types.value)):
             logging.warning(f"Player {self.player_name} tried to play with Bonus Arc chapters without adequate medal requirements. Disabling.")
             self.options.bonus_arc_chapters.value = 0
-        if not (self.options.bronze_medals.value or self.options.silver_medals.value or self.options.gold_medals.value or self.options.diamond_medals.value):
+        if len(self.options.medal_types.value) == 0:
             logging.warning(f"Player {self.player_name} did not enable any medal types! Enabling bronze medals.")
-            self.options.bronze_medals.value = True
+            self.options.medal_types.value.add("Bronze")
 
     def create_item(self, name:str) -> MIUUltraItem:
         item_id: int = self.item_name_to_id[name]
@@ -80,11 +80,11 @@ class MIUUltraWorld(World):
             region.locations.append(location)
 
         target = ""
-        if self.options.bronze_medals.value:
+        if "Bronze" in self.options.medal_types.value:
             target = " Complete"
-        elif self.options.silver_medals.value:
+        elif "Silver" in self.options.medal_types.value:
             target = " Silver Medal"
-        elif self.options.gold_medals.value:
+        elif "Gold" in self.options.medal_types.value:
             target = " Gold Medal"
         else:
             target = " Diamond Medal"
@@ -172,10 +172,7 @@ class MIUUltraWorld(World):
             "version": "0.2.0",
             "locations": self.game_id_to_long,
             "MedalsPerChapter": self.options.medals_per_chapter.value,
-            "BronzeMedals": bool(self.options.bronze_medals.value),
-            "SilverMedals": bool(self.options.silver_medals.value),
-            "GoldMedals": bool(self.options.gold_medals.value),
-            "DiamondMedals": bool(self.options.diamond_medals.value),
+            "MedalTypes": self.options.medal_types.value,
             "FinalChapter": self.options.final_chapter.value,
             "BonusArcChapters": self.options.bonus_arc_chapters.value,
             "EnableBlast": bool(self.options.enable_blast.value),

@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from Options import Toggle, Choice, Range, DeathLink, PerGameCommonOptions, OptionGroup
+from Options import Toggle, Choice, Range, DeathLink, PerGameCommonOptions, OptionGroup, OptionSet
 
 class EnableBlast(Toggle):
     """
@@ -48,34 +48,28 @@ class ExtraMedals(Range):
     range_end = 5
     default = 3
 
-class BronzeMedals(Toggle):
+class MedalTypes(OptionSet):
     """
-    Choose if beating a level should give you a check.
-    NOTE: At least one of these four medal checks must be enabled.
-    """
-    display_name = "Bronze Medal Checks"
-    default = True
+    Choose which types of level completions to count as checks.
+    NOTE: At least one of the four medal checks must be enabled.
 
-class SilverMedals(Toggle):
+    Available values:
+    - Bronze
+    - Silver
+    - Gold
+    - Diamond
     """
-    Choose if beating the silver time should give you a check.
-    """
-    display_name = "Silver Medal Checks"
-    default = True
-
-class GoldMedals(Toggle):
-    """
-    Choose if beating the gold time should give you a check.
-    """
-    display_name = "Gold Medal Checks"
-    default = False
-
-class DiamondMedals(Toggle):
-    """
-    Choose if beating the diamond time should give you a check.
-    """
-    display_name = "Diamond Medal Checks"
-    default = False
+    display_name = "Medal Types"
+    valid_keys = {
+        "Bronze",
+        "Silver",
+        "Gold",
+        "Diamond",
+    }
+    default = {
+        "Bronze",
+        "Silver",
+    }
 
 class BonusArcChapters(Choice):
     """
@@ -135,10 +129,7 @@ class CosmeticShuffleTrapWeight(Range):
 class MIUUltraOptions(PerGameCommonOptions):
     final_chapter: FinalChapter
     bonus_arc_chapters: BonusArcChapters
-    bronze_medals: BronzeMedals
-    silver_medals: SilverMedals
-    gold_medals: GoldMedals
-    diamond_medals: DiamondMedals
+    medal_types: MedalTypes
     medals_per_chapter: MedalsPerChapter
     extra_medals: ExtraMedals
     treasureboxsanity: TreasureBoxSanity
@@ -152,10 +143,7 @@ class MIUUltraOptions(PerGameCommonOptions):
 
 miuu_option_groups = [
     OptionGroup("Chapter Settings", [
-        BronzeMedals,
-        SilverMedals,
-        GoldMedals,
-        DiamondMedals,
+        MedalTypes,
         FinalChapter,
         BonusArcChapters
     ]),
