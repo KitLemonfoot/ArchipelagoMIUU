@@ -11,10 +11,14 @@ namespace ArchipelagoMIUU.Patches
             __instance.DiamondEffect.Stop();
             __instance.numText.text = "";
             __instance.scoreText.text = "";
-            __instance.img.sprite = Notification.instance.Egg;
-            if (ItemHandler.powerupFlags[score.username])
+            if (score.username == "No items required")
             {
-                __instance.img.sprite = Notification.instance.FoundEgg;
+                __instance.img.enabled = false;
+            }
+            else
+            {
+                __instance.img.enabled = true;
+                __instance.img.sprite = ItemHandler.powerupFlags[score.username] ? Notification.instance.FoundEgg : Notification.instance.Egg;
             }
         }
     }

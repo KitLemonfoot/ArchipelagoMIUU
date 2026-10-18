@@ -1,7 +1,7 @@
 {
     "game": "Marble It Up! Ultra",
-    "authors": ["KitLemonfoot"],
+    "authors": ["KitLemonfoot", "thearst3rd"],
     "minimum_ap_version": "0.6.7",
-    "world_version": "0.2.0",
+    "world_version": "0.3.0",
     "igdb_id": 255877
 }

@@ -53,6 +53,7 @@ namespace ArchipelagoMIUU
 			if (result is LoginSuccessful loginSuccess)
 			{
 				MiscHandler.Log("Successfully connected to server, setting up...");
+				PausePanel.ExitToMainMenuImmediate(true);
 				Authenticated = true;
 
 				ItemHandler.wipeItems();
@@ -69,12 +70,34 @@ namespace ArchipelagoMIUU
                 scoutTask.Wait();
                 LocationHandler.scoutedLocations = scoutTask.Result;
 
+				//Get final levels
+				LocationHandler.finalLevels = ((JObject)loginSuccess.SlotData["finalLevels"]).ToObject<Dictionary<string, bool>>();
+
 				//Get YAML settings.
-				LocationHandler.medalTypes = int.Parse(loginSuccess.SlotData["MedalTypes"].ToString());
-				LocationHandler.finalLevel = int.Parse(loginSuccess.SlotData["FinalChapter"].ToString());
-				LocationHandler.bonusArcLevel = int.Parse(loginSuccess.SlotData["BonusArcChapters"].ToString());
+				List<string> medals = ((JArray)loginSuccess.SlotData["MedalTypes"]).ToObject<List<string>>();
+				LocationHandler.bronzeMedals = medals.Contains("Bronze");
+				LocationHandler.silverMedals = medals.Contains("Silver");
+				LocationHandler.goldMedals = medals.Contains("Gold");
+				LocationHandler.diamondMedals = medals.Contains("Diamond");
+				LocationHandler.goalArc = int.Parse(loginSuccess.SlotData["GoalArc"].ToString());
+				LocationHandler.ultraArcChapters = int.Parse(loginSuccess.SlotData["UltraArcChapters"].ToString());
+				LocationHandler.bonusArcChapters = int.Parse(loginSuccess.SlotData["BonusArcChapters"].ToString());
 				ItemHandler.medalsPerChapter = int.Parse(loginSuccess.SlotData["MedalsPerChapter"].ToString());
 				LocationHandler.treasureboxsanity = bool.Parse(loginSuccess.SlotData["Treasureboxsanity"].ToString());
+
+				if (LocationHandler.diamondMedals)
+					LocationHandler.highestMedalType = 3;
+				else if (LocationHandler.goldMedals)
+					LocationHandler.highestMedalType = 2;
+				else if (LocationHandler.silverMedals)
+					LocationHandler.highestMedalType = 1;
+				else
+					LocationHandler.highestMedalType = 0;
+
+				if (LocationHandler.goalArc == 0)
+					ItemHandler.bonusArcComplete = true;
+				if (LocationHandler.goalArc == 1)
+					ItemHandler.ultraArcComplete = true;
 
 				//Setup deathlink
 				doingDeathlinkYaml = bool.Parse(loginSuccess.SlotData["death_link"].ToString());
@@ -135,6 +158,8 @@ namespace ArchipelagoMIUU
 
 		public static void Disconnect()
 		{
+			PausePanel.ExitToMainMenuImmediate(true);
+			MiscHandler.SetConnectString("Not connected to Archipelago");
 			if(Session != null && Session.Socket != null) Session.Socket.DisconnectAsync();
 			Session = null;
 			Authenticated = false;
