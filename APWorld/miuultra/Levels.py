@@ -15,6 +15,8 @@ class MIUULevel():
     treasureBoxLogic: Rule
     gemCount: int = 0
 
+chapterList: List[List[MIUULevel]] = []
+
 # List of every level in the game.
 # Thank god for =CONCAT().
 level_info_dict = {
@@ -130,7 +132,7 @@ level_info_dict = {
     "prime_v2": MIUULevel("Prime", Regions.ba3, "prime_v2", True_(), True_(), True_(), 0),
     "halfpipeheaven_v2": MIUULevel("Halfpipe Heaven", Regions.ba3, "halfpipeheaven_v2", Has("Boost"), True_(), True_(), 0),
     "wanderlust_v2": MIUULevel("Wanderlust", Regions.ba3, "wanderlust_v2", HasAll("Gravity Surfaces", "Super Jump"), True_(), True_(), 0),
-    "boomerang": MIUULevel("Boomerang", Regions.ba3, "boomerang", Has("Bounce Surfaces"), True_(), True_(), 0),
+    "boomerang": MIUULevel("Boomerang", Regions.ba3, "boomerang", True_(), True_(), True_(), 0),
     "kendama": MIUULevel("Kendama", Regions.ba3, "kendama", Has("Boost"), True_(), True_(), 0),
     "cirrus_update": MIUULevel("Cirrus", Regions.ba3, "cirrus_update", HasAll("Feather Fall", "Gravity Surfaces", "Blue Moving Platforms"), True_(), True_(), 0),
     "zenith": MIUULevel("Zenith", Regions.ba3, "zenith", HasAll("Bounce Surfaces", "Super Jump", "Blue Moving Platforms"), True_(), True_(), 0),
@@ -138,7 +140,7 @@ level_info_dict = {
     "alldownhill": MIUULevel("All Downhill From Here", Regions.ba4, "alldownhill", Has("Gravity Surfaces"), True_(), True_(), 0),
     "dangerzone": MIUULevel("Danger Zone", Regions.ba4, "dangerzone", HasAll("Gravity Surfaces", "Boost"), True_(), True_(), 0),
     "olympus": MIUULevel("Olympus", Regions.ba4, "olympus", True_(), True_(), True_(), 0),
-    "headintheclouds_mayhem": MIUULevel("Head in the Clouds", Regions.ba4, "headintheclouds_mayhem", True_(), True_(), True_(), 0),
+    "headintheclouds_mayhem": MIUULevel("Head in the Clouds", Regions.ba4, "headintheclouds_mayhem", Has("Blue Moving Platforms"), True_(), True_(), 0),
     "centripitalforce": MIUULevel("Centripetal Force", Regions.ba4, "centripitalforce", True_(), True_(), True_(), 0),
     "slickshtick": MIUULevel("Slick Shtick", Regions.ba4, "slickshtick", True_(), True_(), True_(), 0),
     "network": MIUULevel("Network", Regions.ba4, "network", HasAll("Gravity Surfaces", "Super Jump"), True_(), True_(), 0),
@@ -149,16 +151,11 @@ level_info_dict = {
     "stratosphere": MIUULevel("Stratosphere", Regions.ba4, "stratosphere", HasAll("Boost", "Feather Fall", "Gravity Surfaces", "Blue Moving Platforms"), True_(), True_(), 0)
 }
 
-#Levels with no starting logic.
-logicless_base_complete_levels = [
-    "learning_to_roll_update", "learning_to_turn_update", "bunny_slope", "fsa_update", "treasure_update", "frosty_update", "leaf_on_the_wind",
-    "duality_v2", "greatWall", "carom_v2", "rush_hour", "intothearctic_v2", "wave_pool_update", "bigeasy", "transit_mayhem", 
-    "speedball_v2", "outskirts", 
-    "aqueduct", "gearing_up", "acrophobia", "rime", "cogValley", 
-    "newtonscradle", "gearheart", "diamond", "shift",
-    "amethyst_v2", "isaacs_apple", "vertigo_mayhem",
-    "rosenbridge_update", "elevatoraction", 
-    "bumperinvasion", "runout", 
-    "contraption", "prime_v2",
-    "olympus", "headintheclouds_mayhem", "centripitalforce", "slickshtick"
-]
+def setupChapterList():
+    for _ in range(len(Regions.all_regions)):
+        chapter: List[MIUULevel] = []
+        chapterList.append(chapter)
+    for lvl in level_info_dict:
+        level = level_info_dict[lvl]
+        clIndex = Regions.all_regions.index(level.homeRegion)
+        chapterList[clIndex].append(level.internalLevelId)

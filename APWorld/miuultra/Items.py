@@ -22,11 +22,11 @@ class MIUUltraItem:
 
 # Item List
 item_list: List[MIUUltraItem] = [
-    MIUUltraItem("Super Jump", ItemClassification.progression, ItemType.Powerup), 
-    MIUUltraItem("Boost", ItemClassification.progression, ItemType.Powerup), 
-    MIUUltraItem("Feather Fall", ItemClassification.progression, ItemType.Powerup), 
-    MIUUltraItem("Gravity Surfaces", ItemClassification.progression, ItemType.Powerup), 
-    MIUUltraItem("Bounce Surfaces", ItemClassification.progression, ItemType.Powerup), 
+    MIUUltraItem("Super Jump", ItemClassification.progression, ItemType.Powerup),
+    MIUUltraItem("Boost", ItemClassification.progression, ItemType.Powerup),
+    MIUUltraItem("Feather Fall", ItemClassification.progression, ItemType.Powerup),
+    MIUUltraItem("Gravity Surfaces", ItemClassification.progression, ItemType.Powerup),
+    MIUUltraItem("Bounce Surfaces", ItemClassification.progression, ItemType.Powerup),
     MIUUltraItem("Blue Moving Platforms", ItemClassification.progression, ItemType.Powerup),
     MIUUltraItem("Blast", ItemClassification.useful, ItemType.Powerup),
 
@@ -41,5 +41,6 @@ item_list: List[MIUUltraItem] = [
     MIUUltraItem("Time Add Trap", ItemClassification.trap, ItemType.Trap),
     MIUUltraItem("Cosmetic Shuffle Trap", ItemClassification.trap, ItemType.Trap),
 
-    MIUUltraItem("Final Level Complete", ItemClassification.progression_skip_balancing, ItemType.End),
+    MIUUltraItem("Ultra Arc Complete", ItemClassification.progression_skip_balancing, ItemType.End),
+    MIUUltraItem("Bonus Arc Complete", ItemClassification.progression_skip_balancing, ItemType.End),
 ]
