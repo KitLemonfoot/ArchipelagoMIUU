@@ -9,6 +9,10 @@ namespace ArchipelagoMIUU
         [ConsoleCommand(description = "Connects to an Archipelago server", paramsDescription = "[ip:port, name, optional password]")]
         public static string apConnect(params string[] args)
         {
+            if (ConnectHandler.Authenticated)
+            {
+                return "You are already connected to an Archipelago server. Please use the apDisconnect command first to connect to a different server.";
+            }
             if (args.Length < 2 || args.Length > 3)
                 return "Please provide exactly 2 or 3 arguments.\n\nUsage:\n  apConnect address:port slotName [password]\n\nExamples:\n\n  apConnect archipelago.gg:12345 MyUsername\n  apConnect localhost:38281 MyUsername password123";
 
@@ -23,6 +27,17 @@ namespace ArchipelagoMIUU
             MIU.Console.print("Death link amnesty override: " + MiscHandler.config_overrideDLAmnesty);
             ConnectHandler.ConnectToAP();
             return "";
+        }
+
+        [ConsoleCommand(description = "Disconnects from an Archipelago server")]
+        public static string apDisconnect()
+        {
+            if (!ConnectHandler.Authenticated)
+            {
+                return "You are not currently connected to an Archipelago server.";
+            }
+            ConnectHandler.Disconnect();
+            return "Disconnected from Archipelago.";
         }
 
         [ConsoleCommand(description = "Override your YAML's Death Link setting", paramsDescription = "-1: no override, 0: disabled, 1: enabled")]
@@ -117,13 +132,37 @@ namespace ArchipelagoMIUU
                 }
                 return output;
             }
-            string element = args[0];
+            string element = string.Join(" ", args);
             if (!ItemHandler.powerupFlags.ContainsKey(element))
             {
                 return "Item " + element + " is not a valid MIUU item.";
             }
             ItemHandler.powerupFlags[element] = !ItemHandler.powerupFlags[element];
             return "Element " + element + " availability has been set to " + ItemHandler.powerupFlags[element].ToString();
+
+        }
+
+        [ConsoleCommand(description = "Request the server to release your slot")]
+        public static string apRelease()
+        {
+            if (!ConnectHandler.Authenticated)
+            {
+                return "You are not currently connected to an Archipelago server.";
+            }
+            ConnectHandler.Session.Say("!release");
+            return "";
+            
+        }
+
+        [ConsoleCommand(description = "Request the server to collect your slot")]
+        public static string apCollect()
+        {
+            if (!ConnectHandler.Authenticated)
+            {
+                return "You are not currently connected to an Archipelago server.";
+            }
+            ConnectHandler.Session.Say("!collect");
+            return "";
             
         }
     }
