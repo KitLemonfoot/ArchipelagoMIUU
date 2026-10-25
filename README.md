@@ -57,11 +57,30 @@ All further instructions can be found in the [official Archipelago Setup Guide](
 ### Connection
 1. Start Marble It Up! Ultra and press `~` to access the in-game console.
 2. In the console, use the `apConnect` command to connect to the archipelago server.
+	- `apConnect [host:port] [slotname] [password (optional)]`
+	- Examples:
+		- `apConnect archipelago.gg:12345 MIUUPlayer`
+		- `apConnect archipelago.gg:12345 MIUUPlayer password1234`
+	- If your slot name (or password) has a space in it, you must surround it with quotes:
+		- `apConnect archipelago.gg:12345 "MIUU Player" password1234`
 3. Your Archipelago server IP should be displayed in the top right corner of the main menu if the connection was successful.
-4. **Optional**: Use the `apOverrideDl` and `apOverrideDlAmnesty` commands to override the YAML's Death Link settings. Examples:
+4. **Optional**: Use the `apOverrideDl [0 or 1]` and `apOverrideDlAmnesty [count]` commands to override the YAML's Death Link settings. Examples:
 	- `apOverrideDl 0` or `apOverrideDl 1` to forcably disable or enable Death Link
 	- `apOverrideDlAmnesty 10` to forcably set the Death Link amnesty to 10 deaths (for when Death Link is enabled)
 	- `apOverride -1` and `apOverrideDlAmnesty -1` to disable the overrides (it will use the values in the YAML)
+
+While connected, the following commands are also available:
+
+| name | description |
+| --- | --- |
+| `apOverrideDl` and `apOverrideDlAmnesty` | For overriding Death Link, see documentation above |
+| `apDisconnect` | Disconnect from the Archipelago server |
+| `apSay [message]` | Sends a message to the Archipelago chat |
+| `apRelease` | Requests the server to release your slot |
+| `apCollect` | Requests the server to collect your slot |
+| `apToggleElement [element]` | **Only while DISCONNECTED**: Toggles the availability of the specified powerup/surface. This can be used to practice levels offline with missing powerups. With no arguments, this prints the current status of each element |
+
+Use the `help` command in-game to see a list of all available commands and their descriptions.
 
 ## Building
 You will need the latest version of the [.NET SDK](https://dotnet.microsoft.com/download) installed.
