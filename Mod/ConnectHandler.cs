@@ -11,12 +11,14 @@ using UnityEngine;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
 using HarmonyLib;
+using System.Net.WebSockets;
 
 namespace ArchipelagoMIUU
 {
     public static class ConnectHandler
     {
         public static bool Authenticated;
+        public static bool ConnectInitFinished;
         public static ArchipelagoSession Session;
         public static string APserver = null;
 		public static string APSlot = null;
@@ -33,18 +35,24 @@ namespace ArchipelagoMIUU
 			APSlot = MiscHandler.config_APslot;
 			APserver = MiscHandler.config_APip;
 
+			ItemHandler.wipeItems();
+			ConnectInitFinished = false;
+
 			try{
 				Session = ArchipelagoSessionFactory.CreateSession(APserver);
+
+				// Register handlers before connecting
+				Session.Socket.ErrorReceived += HandleError;
+				Session.Socket.SocketClosed += HandleSocketClosed;
+				Session.Items.ItemReceived += HandleItemReceived;
 
 				result = Session.TryConnectAndLogin(
 					"Marble It Up! Ultra",
 					APSlot,
 					ItemsHandlingFlags.AllItems,
-					new Version(0,6,7),
-					null,
-					null,
-					MiscHandler.config_APpassword == "" ? null : MiscHandler.config_APpassword,
-					true
+					version: new Version(0,6,7),
+					password: MiscHandler.config_APpassword == "" ? null : MiscHandler.config_APpassword,
+					requestSlotData: true
 				);
 			}
 			catch (Exception e){
@@ -55,10 +63,6 @@ namespace ArchipelagoMIUU
 				MiscHandler.Log("Successfully connected to server, setting up...");
 				PausePanel.ExitToMainMenuImmediate(true);
 				Authenticated = true;
-
-				ItemHandler.wipeItems();
-				//flushItems();
-				Session.Items.ItemReceived += ItemReceived;
 
 				//Push locations
 				LocationHandler.locations = ((JObject)loginSuccess.SlotData["locations"]).ToObject<Dictionary<string, long>>();
@@ -127,6 +131,7 @@ namespace ArchipelagoMIUU
 				MiscHandler.Log("Current Gold Completion Medals: " + ItemHandler.goldCompletionMedals);
 
 				MiscHandler.Log("Successfully set up a connection to Archipelago. Let's play!");
+				ConnectInitFinished = true;
 			}
             else if (result is LoginFailure failure)
 			{
@@ -141,7 +146,7 @@ namespace ArchipelagoMIUU
 				}
 				MiscHandler.Log(errorMessage);
 				MiscHandler.SetConnectString(errorMessage);
-				Session = null;
+				ClearSession();
 				return;
 			}
         }
@@ -158,34 +163,55 @@ namespace ArchipelagoMIUU
 
 		public static void Disconnect()
 		{
-			PausePanel.ExitToMainMenuImmediate(true);
-			MiscHandler.SetConnectString("Not connected to Archipelago");
-			if(Session != null && Session.Socket != null) Session.Socket.DisconnectAsync();
-			Session = null;
-			Authenticated = false;
-			ItemHandler.wipeItems();
+			if (Session != null && Session.Socket != null && Session.Socket.Connected)
+				Session.Socket.DisconnectAsync();
 		}
 
-		public static void flushItems()
+		public static void HandleError(Exception e, string message)
 		{
-			//MiscHandler.Log("Flushing items");
-			while (Session.Items.Any())
+			MiscHandler.Log($"Received error: {message}\n{e}");
+			if (e is WebSocketException)
 			{
-				ItemInfo item = Session.Items.PeekItem();
-				string name = item.ItemName;
-				ItemHandler.updateItem(name);
-				Session.Items.DequeueItem();
+				HandleSocketClosed(e.Message);
 			}
 		}
 
-        public static void ItemReceived(IReceivedItemsHelper helper){
-			ItemInfo item = helper.PeekItem();
-			string name = item.ItemName;
-			string sender = item.Player.Name;
-			string colorData = MiscHandler.getItemColor(item.Flags);
-			MiscHandler.Log("Got item from AP: "+name);
-			ItemHandler.recieveItem(name, sender, colorData);
-			helper.DequeueItem();
+		public static void HandleSocketClosed(string reason)
+		{
+			if (!Authenticated)
+				return;
+			MiscHandler.Log("Socket closed" + (reason != "" ? ": " + reason : ""));
+			MiscHandler.justDisconnected = true;
+			Authenticated = false;
+		}
+
+		public static void HandleItemReceived(IReceivedItemsHelper helper)
+		{
+			while (helper.Any())
+			{
+				ItemInfo item = helper.DequeueItem();
+				string name = item.ItemName;
+				string sender = item.Player.Name;
+				string colorData = MiscHandler.getItemColor(item.Flags);
+				MiscHandler.Log("Got item from AP: " + name);
+				ItemHandler.recieveItem(name, sender, colorData);
+			}
+		}
+
+		public static void ClearSession()
+		{
+			if (Session != null)
+			{
+				Session.Socket.ErrorReceived -= HandleError;
+				Session.Socket.SocketClosed -= HandleSocketClosed;
+				Session.Items.ItemReceived -= HandleItemReceived;
+				if (deathLinkService != null)
+				{
+					deathLinkService.OnDeathLinkReceived -= DeathLinkRecieved;
+					deathLinkService = null;
+				}
+				Session = null;
+			}
 		}
 
 		public static void DeathLinkRecieved(DeathLink deathLink)

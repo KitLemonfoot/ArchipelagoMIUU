@@ -17,6 +17,7 @@ namespace ArchipelagoMIUU
         public static int config_overrideDLAmnesty = -1;
         public static bool disallowDeathlink = false;
         public static bool shuffleTrapLatch = false;
+        public static bool justDisconnected = false;
 
         public static string connectString = "Not connected to Archipelago";
 
