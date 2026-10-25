@@ -4,6 +4,7 @@ using Archipelago.MultiClient.Net.Packets;
 using Archipelago.MultiClient.Net.Helpers;
 using Archipelago.MultiClient.Net.Models;
 using Archipelago.MultiClient.Net.BounceFeatures.DeathLink;
+using Archipelago.MultiClient.Net.MessageLog.Messages;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -45,6 +46,7 @@ namespace ArchipelagoMIUU
 				Session.Socket.ErrorReceived += HandleError;
 				Session.Socket.SocketClosed += HandleSocketClosed;
 				Session.Items.ItemReceived += HandleItemReceived;
+				Session.MessageLog.OnMessageReceived += HandleLogMessage;
 
 				result = Session.TryConnectAndLogin(
 					"Marble It Up! Ultra",
@@ -198,6 +200,35 @@ namespace ArchipelagoMIUU
 			}
 		}
 
+		public static void HandleLogMessage(LogMessage message)
+		{
+			MiscHandler.Log("Message received: " + message.ToString());
+
+			switch (message)
+			{
+				case CountdownLogMessage:
+					CountdownLogMessage countdownMessage = message as CountdownLogMessage;
+					if (countdownMessage.ToString().Contains("Starting"))
+						break;
+					string seconds = countdownMessage.RemainingSeconds.ToString();
+					if (seconds == "0")
+						seconds = "GO";
+					Notification.Notify(seconds, "Countdown", 1f, Assets.APIcon);
+					break;
+				case HintItemSendLogMessage:
+					if ((message as HintItemSendLogMessage).IsRelatedToActivePlayer)
+					{
+						string str = message.ToString();
+						if (str.StartsWith("[Hint]: "))
+							str = str.Substring(8);
+						Notification.Notify(str, "Hint", 5f, Assets.APIcon);
+					}
+					break;
+				default:
+					break;
+			}
+		}
+
 		public static void ClearSession()
 		{
 			if (Session != null)
@@ -205,6 +236,7 @@ namespace ArchipelagoMIUU
 				Session.Socket.ErrorReceived -= HandleError;
 				Session.Socket.SocketClosed -= HandleSocketClosed;
 				Session.Items.ItemReceived -= HandleItemReceived;
+				Session.MessageLog.OnMessageReceived -= HandleLogMessage;
 				if (deathLinkService != null)
 				{
 					deathLinkService.OnDeathLinkReceived -= DeathLinkRecieved;
