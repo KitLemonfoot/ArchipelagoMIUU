@@ -69,7 +69,8 @@ You will need the latest version of the [.NET SDK](https://dotnet.microsoft.com/
 	- Set `GameDir` to be a path pointing to your Marble It Up! Ultra game installation
 	- If necessary, change `GameDataDir` to point to the `_Data` folder in your Marble It Up! Ultra installation. Required on Linux
 2. Ensure [MIUU Mod Loader](https://codeberg.org/thearst3rd/miuu-mod-loader) is installed so that the Harmony dll can be found.
-3. Build the project with `dotnet build --configuration Release`. This will build the mod and copy it and its dependencies into the `Mods` folder of your MIUU install!
+3. Build the project with `dotnet build --configuration Release`. This will build the mod and copy it into the `Mods\ArchipelagoMIUU` folder of your MIUU install.
+4. Download [Unity 2020.3.44 corelibs](https://unity.bepinex.dev/corlibs/2020.3.44.zip) and copy `System.Xml.Linq.dll` into the `Mods\ArchipelagoMIUU` folder.
 
 ## Todo
 A good amount.
