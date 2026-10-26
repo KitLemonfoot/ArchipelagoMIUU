@@ -3,7 +3,7 @@
 ## What does Archipelago do to Marble It Up! Ultra?
 
 - Completing levels is a check.
-	- Depending on YAML settings, completing a level under Silver, Gold, and Diamond times are also checks.
+	- Depending on YAML settings, completing a level under Bronze, Silver, Gold, and Diamond times are checks.
 	- Depending on YAML settings, collecting a level's Treasure Box can also be a check.
 - Various powerups and level elements are items in the multiworld.
 	- Super Jump
@@ -12,9 +12,11 @@
 	- Gravity Surfaces
 	- Bounce Surfaces
 	- Blue Moving Platforms
-- To access chapters in the Ultra Arc, you will need Completion Medals. These can be found in the multiworld.
-- Chapters in the Bonus Arc will require you play with Gold Medal completion times or higher.
-	- Unlocking the chapters will require Gold Completion Medals, which can be found in the multiworld.
+- Depending on YAML settings, the available levels will be in Ultra Arc, Bonus Arc, or both.
+	- Each Arc can have a configurable number of chapters enabled.
+	- An Arc can be enabled without being required to beat for the end goal.
+- To access chapters in the Ultra Arc (if enabled), you will need Completion Medals. These can be found in the multiworld.
+- To access chapters in the Bonus Arc (if enabled), you will need Gold Completion Medals, which can be found in the multiworld.
 - Several traps are enableable:
 	- Time Add Trap: Adds 5 seconds to your current in-game time.
 	- Cosmetic Shuffle Trap: Shuffles your marble's current cosmetics.
@@ -30,7 +32,7 @@ Additionally, the following features will be *disabled* while playing Archipelag
 - Saving replays
 - Amplitude telemetry
 
-You will need to obtain enough Completion Medals to unlock your goal level, then complete it to goal.
+You will need to obtain enough Completion Medals to unlock your goal level(s), then complete it to goal.
 
 ## Why didn't my medals save properly?
 

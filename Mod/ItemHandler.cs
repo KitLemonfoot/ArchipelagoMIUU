@@ -44,7 +44,7 @@ namespace ArchipelagoMIUU
             if (powerupFlags.ContainsKey(itemName))
             {
                 powerupFlags[itemName] = true;
-                if (Notification.instance != null)
+                if (ConnectHandler.ConnectInitFinished)
                 {
                     string message = "Received " + itemName + " from " + sender;
                     if(sender == ConnectHandler.APSlot)
@@ -59,14 +59,14 @@ namespace ArchipelagoMIUU
             {
                 case "Completion Medal": completionMedals+=1;break;
                 case "Gold Completion Medal": goldCompletionMedals+=1;break;
-                case "5 Second Time Freeze": MiscHandler.doTimeTravelItem();break;
-                case "Time Add Trap": MiscHandler.doTimeAddTrap();break;
-                case "Cosmetic Shuffle Trap": MiscHandler.doCosmeticShuffleTrap();break;
+                case "5 Second Time Freeze": if (ConnectHandler.ConnectInitFinished) { MiscHandler.doTimeTravelItem(); } break;
+                case "Time Add Trap": if (ConnectHandler.ConnectInitFinished) { MiscHandler.doTimeAddTrap(); } break;
+                case "Cosmetic Shuffle Trap": if (ConnectHandler.ConnectInitFinished) { MiscHandler.doCosmeticShuffleTrap(); } break;
                 case "Ultra Arc Complete": ultraArcComplete = true; checkForCompletion(); break;
                 case "Bonus Arc Complete": bonusArcComplete = true; checkForCompletion(); break;
                 default: MiscHandler.Log("Invalid item "+itemName+", ignoring.");break;
             }
-            if (Notification.instance != null)
+            if (ConnectHandler.ConnectInitFinished)
             {
                 string message = "Received " + colorData + itemName + "</color> from " + sender;
                 if(sender == ConnectHandler.APSlot)
@@ -74,22 +74,6 @@ namespace ArchipelagoMIUU
                     message = "You found your " + colorData + itemName + "</color>";
                 }
                 Notification.Notify(message, "Archipelago", 4f, Notification.instance.FoundEgg);
-            }
-        }
-
-        // Trimmed down version of above for item flushes.
-        public static void updateItem(string itemName)
-        {
-            if (powerupFlags.ContainsKey(itemName))
-            {
-                powerupFlags[itemName] = true;
-                return;
-            }
-            switch (itemName)
-            {
-                case "Completion Medal": completionMedals+=1;break;
-                case "Gold Completion Medal": goldCompletionMedals+=1;break;
-                default: break;
             }
         }
 

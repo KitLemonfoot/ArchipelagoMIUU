@@ -142,6 +142,17 @@ namespace ArchipelagoMIUU
 
         }
 
+        [ConsoleCommand(description = "Send a message to the Archipelago chat")]
+        public static string apSay(params string[] args)
+        {
+            if (!ConnectHandler.Authenticated)
+            {
+                return "You are not currently connected to an Archipelago server.";
+            }
+            ConnectHandler.Session.Say(string.Join(" ", args));
+            return "";
+        }
+
         [ConsoleCommand(description = "Request the server to release your slot")]
         public static string apRelease()
         {
@@ -151,7 +162,6 @@ namespace ArchipelagoMIUU
             }
             ConnectHandler.Session.Say("!release");
             return "";
-            
         }
 
         [ConsoleCommand(description = "Request the server to collect your slot")]
@@ -163,7 +173,6 @@ namespace ArchipelagoMIUU
             }
             ConnectHandler.Session.Say("!collect");
             return "";
-            
         }
     }
 }

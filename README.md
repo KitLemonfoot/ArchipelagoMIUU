@@ -3,7 +3,7 @@ This is a work-in-progress mod for [Marble It Up! Ultra](https://store.steampowe
 
 ## What does Archipelago do to Marble It Up! Ultra?
 - Completing levels is a check.
-	- Depending on YAML settings, completing a level under Silver, Gold, and Diamond times are also checks.
+	- Depending on YAML settings, completing a level under Bronze, Silver, Gold, and Diamond times are checks.
 	- Depending on YAML settings, collecting a level's Treasure Box can also be a check.
 - Various powerups and level elements are items in the multiworld.
 	- Super Jump
@@ -12,9 +12,11 @@ This is a work-in-progress mod for [Marble It Up! Ultra](https://store.steampowe
 	- Gravity Surfaces
 	- Bounce Surfaces
 	- Blue Moving Platforms
-- To access chapters in the Ultra Arc, you will need Completion Medals. These can be found in the multiworld.
-- Chapters in the Bonus Arc will require you play with Gold Medal completion times or higher.
-	- Unlocking the chapters will require Gold Completion Medals, which can be found in the multiworld.
+- Depending on YAML settings, the available levels will be in Ultra Arc, Bonus Arc, or both.
+	- Each Arc can have a configurable number of chapters enabled.
+	- An Arc can be enabled without being required to beat for the end goal.
+- To access chapters in the Ultra Arc (if enabled), you will need Completion Medals. These can be found in the multiworld.
+- To access chapters in the Bonus Arc (if enabled), you will need Gold Completion Medals, which can be found in the multiworld.
 - Several traps are enableable:
 	- Time Add Trap: Adds 5 seconds to your current in-game time.
 	- Cosmetic Shuffle Trap: Shuffles your marble's current cosmetics.
@@ -30,7 +32,7 @@ Additionally, the following features will be *disabled* while playing Archipelag
 - Saving replays
 - Amplitude telemetry
 
-You will need to obtain enough Completion Medals to unlock your goal level, then complete it to goal.
+You will need to obtain enough Completion Medals to unlock your goal level(s), then complete it to goal.
 
 ## Setup
 You will need the following:
@@ -57,11 +59,30 @@ All further instructions can be found in the [official Archipelago Setup Guide](
 ### Connection
 1. Start Marble It Up! Ultra and press `~` to access the in-game console.
 2. In the console, use the `apConnect` command to connect to the archipelago server.
+	- `apConnect [host:port] [slotname] [password (optional)]`
+	- Examples:
+		- `apConnect archipelago.gg:12345 MIUUPlayer`
+		- `apConnect archipelago.gg:12345 MIUUPlayer password1234`
+	- If your slot name (or password) has a space in it, you must surround it with quotes:
+		- `apConnect archipelago.gg:12345 "MIUU Player" password1234`
 3. Your Archipelago server IP should be displayed in the top right corner of the main menu if the connection was successful.
-4. **Optional**: Use the `apOverrideDl` and `apOverrideDlAmnesty` commands to override the YAML's Death Link settings. Examples:
+4. **Optional**: Use the `apOverrideDl [0 or 1]` and `apOverrideDlAmnesty [count]` commands to override the YAML's Death Link settings. Examples:
 	- `apOverrideDl 0` or `apOverrideDl 1` to forcably disable or enable Death Link
 	- `apOverrideDlAmnesty 10` to forcably set the Death Link amnesty to 10 deaths (for when Death Link is enabled)
 	- `apOverride -1` and `apOverrideDlAmnesty -1` to disable the overrides (it will use the values in the YAML)
+
+While connected, the following commands are also available:
+
+| name | description |
+| --- | --- |
+| `apOverrideDl` and `apOverrideDlAmnesty` | For overriding Death Link, see documentation above |
+| `apDisconnect` | Disconnect from the Archipelago server |
+| `apSay [message]` | Sends a message to the Archipelago chat |
+| `apRelease` | Requests the server to release your slot |
+| `apCollect` | Requests the server to collect your slot |
+| `apToggleElement [element]` | **Only while DISCONNECTED**: Toggles the availability of the specified powerup/surface. This can be used to practice levels offline with missing powerups. With no arguments, this prints the current status of each element |
+
+Use the `help` command in-game to see a list of all available commands and their descriptions.
 
 ## Building
 You will need the latest version of the [.NET SDK](https://dotnet.microsoft.com/download) installed.
@@ -69,7 +90,8 @@ You will need the latest version of the [.NET SDK](https://dotnet.microsoft.com/
 	- Set `GameDir` to be a path pointing to your Marble It Up! Ultra game installation
 	- If necessary, change `GameDataDir` to point to the `_Data` folder in your Marble It Up! Ultra installation. Required on Linux
 2. Ensure [MIUU Mod Loader](https://codeberg.org/thearst3rd/miuu-mod-loader) is installed so that the Harmony dll can be found.
-3. Build the project with `dotnet build --configuration Release`. This will build the mod and copy it and its dependencies into the `Mods` folder of your MIUU install!
+3. Build the project with `dotnet build --configuration Release`. This will build the mod and copy it into the `Mods\ArchipelagoMIUU` folder of your MIUU install.
+4. Download [Unity 2020.3.44 corelibs](https://unity.bepinex.dev/corlibs/2020.3.44.zip) and copy `System.Xml.Linq.dll` into the `Mods\ArchipelagoMIUU` folder.
 
 ## Todo
 A good amount.

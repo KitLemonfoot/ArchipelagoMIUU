@@ -20,6 +20,7 @@ public static class PatchEntryPoint
             SceneManager.sceneLoaded -= BeginPatch;
             new Harmony("archipelago").PatchAll();
             Assets.LoadAPIcon();
+            UpdateHandler.Init();
             MiscHandler.Log("Archipelago Loaded!");
         }
     }
