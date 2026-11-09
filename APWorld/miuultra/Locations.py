@@ -2,6 +2,7 @@ from typing import List, Optional, Callable
 from BaseClasses import CollectionState
 from dataclasses import dataclass
 from .Levels import MIUULevel, level_info_dict
+from .Checkpoints import MIUUCheckpoint, checkpoint_dict
 from .Regions import Regions, MIUUltraRegion
 from .Options import MIUUltraOptions
 from .MIUUExtraLogic import MIUUExtraLogic
@@ -58,6 +59,14 @@ def get_location_data(player: Optional[int], options: Optional[MIUUltraOptions])
                 locations.append(
                     MIUUltraLocation(level.name+" Treasure Box", level.homeRegion, level.internalLevelId+"-tb", lvlLogic)
                 )
+            #Checkpointsanity
+            if not options or options.checkpointsanity:
+                if level.internalLevelId in checkpoint_dict:
+                    for ckpt in checkpoint_dict[level.internalLevelId]:
+                        ckptLogic = And(ckpt.logic, medalLogic)
+                        locations.append(
+                            MIUUltraLocation(f"{level.name} - {ckpt.name}", level.homeRegion, f"{level.internalLevelId}-ckpt-{ckpt.checkpointID}", ckptLogic)
+                        )
             continue
 
     return locations

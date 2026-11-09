@@ -61,8 +61,8 @@ class MIUUltraWorld(World):
         if len(self.options.medal_types.value) == 0:
             logging.warning(f"[MIUU] Player {self.player_name} did not enable any medal types! Enabling bronze medals.")
             self.options.medal_types.value.add("Bronze")
-        # Having only one medal type without treasureboxsanity guts fuzzing tests.
-        # Force two.
+        # Enforce two medal types to prevent fill errors.
+        # There is a special clause here that if treasurebox is on, bypass this enforcement.
         if len(self.options.medal_types.value) == 1 and self.options.treasureboxsanity.value == False:
             lowestSurrogate = "Bronze"
             if "Bronze" in self.options.medal_types.value:
@@ -131,7 +131,7 @@ class MIUUltraWorld(World):
     def create_items(self):
         pool=[]
 
-        #Handle powerups automatically.
+        #Handle powerups and checkpoints automatically.
         #Medals and other items are handled manually.
         for item in item_list:
             if(item.itemType != ItemType.Powerup):

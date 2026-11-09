@@ -29,6 +29,14 @@ class TreasureBoxSanity(Toggle):
     """
     display_name = "Treasureboxsanity"
 
+class CheckPointSanity(Toggle):
+    """
+    Enables checkpoints as checks.
+    """
+    #TODO: Add multiple options for this to make checkpoint access items.
+    #...Ideally without having to rewrite item handling.
+    display_name = "Checkpointsanity"
+
 class MedalsPerChapter(Range):
     """
     Determine how many Completion Medals are needed to unlock each chapter.
@@ -149,6 +157,7 @@ class MIUUltraOptions(PerGameCommonOptions):
     medals_per_chapter: MedalsPerChapter
     extra_medals: ExtraMedals
     treasureboxsanity: TreasureBoxSanity
+    checkpointsanity: CheckPointSanity
     enable_blast: EnableBlast
     death_link: MIUUDeathLink
     death_link_amnesty: DeathLinkAmnesty
@@ -176,6 +185,7 @@ miuu_option_groups = [
     OptionGroup("Game Settings", [
         EnableBlast,
         TreasureBoxSanity,
+        CheckPointSanity,
         MIUUDeathLink,
         DeathLinkAmnesty
     ]),
