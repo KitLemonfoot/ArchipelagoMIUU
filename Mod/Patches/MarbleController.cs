@@ -27,6 +27,28 @@ namespace ArchipelagoMIUU.Patches
         }
     }
 
+    // Handle checkpointsanity.
+    [HarmonyPatch(typeof(MarbleController), "OnCheckpoint")]
+    class MarbleController_OnCheckpoint_Patch
+    {
+        public static bool Prefix(MarbleController __instance, GameObject checkpoint)
+        {
+            // Do already-touched check from original game to prevent pummeling AP
+            GameObject lastCheckpoint = Traverse.Create(__instance).Field("LastCheckpoint").GetValue() as GameObject;
+            if(lastCheckpoint == checkpoint && __instance.LastCheckpointGemsRemaining == __instance.GemsRemaining)
+            {
+                return true;
+            }
+            // The game determines which checkpoint to send you back to based on the checkpoint object's Unity transform, meaning there isn't really 
+            // a good way to ID which checkpoints exist in a level. It sucks, but this is the next best option. 
+            Vector3 pos = checkpoint.transform.position;
+            string posString = $"{pos.x}{pos.y}{pos.z}";
+            MiscHandler.Log($"Touched a checkpoint in {GlobalContext.CurrentLevel.id} with adapted checkpoint ID of {posString}");
+            LocationHandler.CheckLocation($"{GlobalContext.CurrentLevel.id}-ckpt-{posString}");
+            return true;
+        }
+    }
+
     //For some reason, some levels spawn the marble out of bounds on load, which messes with Death Link.
     //As such, disallow Death Link until the marble is done respawning.
     [HarmonyPatch(typeof(MarbleController), "Respawn")]
