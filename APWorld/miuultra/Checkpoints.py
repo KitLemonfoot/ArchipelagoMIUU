@@ -308,7 +308,7 @@ checkpoint_dict: dict[str, List[MIUUCheckpoint]] = {
         MIUUCheckpoint("Checkpoint After Third Gem Area", Regions.ch6, "-420.91", HasAll("Gravity Surfaces", "Bounce Surfaces", "Super Jump", "Boost")),
         MIUUCheckpoint("Checkpoint Before Ice Half-Pipe", Regions.ch6, "-447.91", HasAll("Gravity Surfaces", "Bounce Surfaces", "Super Jump", "Boost")),
         MIUUCheckpoint("Checkpoint Before Fourth Gem Area", Regions.ch6, "-546.1495", HasAll("Gravity Surfaces", "Bounce Surfaces", "Super Jump", "Boost")),
-        MIUUCheckpoint("Checkpoint After Fourth Gem Area", Regions.ch6, "-581.65182", HasAll("Gravity Surfaces", "Bounce Surfaces", "Super Jump", "Boost")()),
+        MIUUCheckpoint("Checkpoint After Fourth Gem Area", Regions.ch6, "-581.65182", HasAll("Gravity Surfaces", "Bounce Surfaces", "Super Jump", "Boost")),
         MIUUCheckpoint("Checkpoint Before Feather Fall Jump", Regions.ch6, "-572.553479", HasAll("Gravity Surfaces", "Bounce Surfaces", "Super Jump", "Boost")),
         MIUUCheckpoint("Checkpoint In Center of Fifth Gem Area", Regions.ch6, "-107.7329-395.806563.31092", HasAll("Gravity Surfaces", "Bounce Surfaces", "Super Jump", "Boost", "Feather Fall")),
         MIUUCheckpoint("Checkpoint After Fifth Gem Area", Regions.ch6, "-107.4269-395.0334103.1099", HasAll("Gravity Surfaces", "Bounce Surfaces", "Super Jump", "Boost", "Feather Fall")),
