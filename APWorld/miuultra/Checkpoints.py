@@ -11,7 +11,9 @@ class MIUUCheckpoint():
     checkpointID: str
     logic: Rule
 
-
+# You generate your code using Claude.
+# I generate my code using Excel's =CONCAT() function.
+# We are not the same.
 checkpoint_dict: dict[str, List[MIUUCheckpoint]] = {
     #
     # Chapter 1
@@ -97,7 +99,7 @@ checkpoint_dict: dict[str, List[MIUUCheckpoint]] = {
         MIUUCheckpoint("Checkpoint After Gem Platform", Regions.ch3, "12020.51.5", Has("Blue Moving Platforms")),
         MIUUCheckpoint("Checkpoint Before Basher Archway", Regions.ch3, "9615104", Has("Blue Moving Platforms")),
         MIUUCheckpoint("Checkpoint Before Second Blue Moving Platform", Regions.ch3, "-161984", Has("Blue Moving Platforms")),
-        MIUUCheckpoint("Checkpint Before Final Slope", Regions.ch3, "-1619-15", Has("Blue Moving Platforms"))
+        MIUUCheckpoint("Checkpoint Before Final Slope", Regions.ch3, "-1619-15", Has("Blue Moving Platforms"))
     ],
     "tubular": [MIUUCheckpoint("Checkpoint Before Final Tube", Regions.ch3, "20.53574-100.4387", True_())],
     "overclocked_update": [
@@ -427,6 +429,73 @@ checkpoint_dict: dict[str, List[MIUUCheckpoint]] = {
     #
     #Bonus 3
     #
+    "contraption":[
+        MIUUCheckpoint("Checkpoint on Left Side of Outer Ring", Regions.ba3, "-91.0730.5-9.338", True_()),
+        MIUUCheckpoint("Checkpoint on Right Side of Outer Ring", Regions.ba3, "90.81250.512.0625", True_()),
+    ],
+    "uphill":[
+        MIUUCheckpoint("Checkpoint Before Gravity Surface Upward Curve", Regions.ba3, "-9.16551963.34136204.5202", True_()),
+        MIUUCheckpoint("Checkpoint Near Super Jump Intersection", Regions.ba3, "-9.2565962.15864204.5", Has("Gravity Surfaces")),
+    ],
+    "retro":[
+        MIUUCheckpoint("Checkpoint Before Long Upward Curve", Regions.ba3, "5378407", True_()),
+        MIUUCheckpoint("Checkpoint Before Half-Pipe With Holes", Regions.ba3, "27348539", True_()),
+        MIUUCheckpoint("Checkpoint After Half-Pipe Near Right Turn", Regions.ba3, "27352.8751047", True_()),
+    ],
+    "warpcore":[
+        MIUUCheckpoint("Checkpoint on Left Face", Regions.ba3, "1101072", Has("Gravity Surfaces")),
+        MIUUCheckpoint("Checkpoint on Right Face", Regions.ba3, "1403060", Has("Gravity Surfaces")),
+        MIUUCheckpoint("Checkpoint on Front Face", Regions.ba3, "114.7557", Has("Gravity Surfaces")),
+        MIUUCheckpoint("Checkpoint on Back Face", Regions.ba3, "13535.000027", Has("Gravity Surfaces")),
+    ],
+    "bash_faster":[
+        MIUUCheckpoint("Checkpoint After First Basher Set", Regions.ba3, "27.56.5128", True_()),
+        MIUUCheckpoint("Checkpoint After Uphill Bashers", Regions.ba3, "173.6718.5237.06", True_()),
+        MIUUCheckpoint("Checkpoint After Basher Floor Dip", Regions.ba3, "317.9117.5249.53", True_()),
+        MIUUCheckpoint("Checkpoint Before Final Ramp", Regions.ba3, "138.55504", True_()),  
+    ],
+    "prime_v2":[
+        MIUUCheckpoint("Checkpoint After First Gem Slope", Regions.ba3, "00-24", True_()),
+        MIUUCheckpoint("Checkpoint Before Second Gem Slope", Regions.ba3, "-1262.5", True_()),    
+    ],
+    "halfpipeheaven_v2":[
+        MIUUCheckpoint("Checkpoint After Second Pipe", Regions.ba3, "-136.75", True_()),
+        MIUUCheckpoint("Checkpoint Before Gem Pipe Gap", Regions.ba3, "-23.753.75-10.75", True_()),
+        MIUUCheckpoint("Checkpoint Before First Boost Pipe", Regions.ba3, "85.257.75-26.75", True_()),
+    ],
+    "wanderlust_v2":[
+        MIUUCheckpoint("Checkpoint On Right Side of Starting Intersection", Regions.ba3, "34.51456.5", True_()),
+        MIUUCheckpoint("Checkpoint Near Middle Gem", Regions.ba3, "0.518-73.5", True_()),
+        MIUUCheckpoint("Checkpoint Between Gravity Gem and Thin Walkways", Regions.ba3, "70.51424.5", True_()),
+    ],
+    "boomerang":[
+        MIUUCheckpoint("Checkpoint Before Ice Basher", Regions.ba3, "06-108", True_()),
+        MIUUCheckpoint("Checkpoint Looking Up at Time Travel Maze", Regions.ba3, "-1135", True_()),
+        MIUUCheckpoint("Checkpoint After Gem Collection", Regions.ba3, "-24221", True_()),        
+    ],
+    "kendama":[
+        MIUUCheckpoint("Checkpoint After Starting Platforms", Regions.ba3, "-64.987", True_()),
+        MIUUCheckpoint("Checkpoint Before Dual Walkways", Regions.ba3, "2622.5-58", Has("Boost")),
+        MIUUCheckpoint("Checkpoint Before Second Boost Upward Slope", Regions.ba3, "-6690.5", Has("Boost")),
+        MIUUCheckpoint("Checkpoint Before Final Platforming Section", Regions.ba3, "-9712", Has("Boost")),
+    ],
+    "cirrus_update":[
+        MIUUCheckpoint("Checkpoint On Underside of Starting Platform", Regions.ba3, "-61.7558.2575.375", HasAll("Gravity Surfaces", "Blue Moving Platforms")),
+        MIUUCheckpoint("Checkpoint On Ending Platform", Regions.ba3, "-3.2544.7535.75", Has("Feather Fall")),
+        MIUUCheckpoint("Checkpoint On Underside of Ending Platform", Regions.ba3, "-3.543.7535.5", HasAll("Feather Fall", "Gravity Surfaces", "Blue Moving Platforms")),
+        MIUUCheckpoint("Checkpoint On Underside of Higher Curved Platform", Regions.ba3, "-17.2595.95160.71", HasAll("Gravity Surfaces", "Blue Moving Platforms")),
+        MIUUCheckpoint("Checkpoint On Underside of Higher Loop Platform", Regions.ba3, "-123.571.2522.24699", HasAll("Gravity Surfaces", "Blue Moving Platforms")),
+        MIUUCheckpoint("Checkpoint On Higher Loop Platform", Regions.ba3, "-107.578.2522.25654",  HasAll("Feather Fall", "Gravity Surfaces", "Blue Moving Platforms")),
+        MIUUCheckpoint("Checkpoint On Lower Curved Platform", Regions.ba3, "-98.526128.2", True_()),
+        MIUUCheckpoint("Checkpoint On Underside of Lower Curved Platform", Regions.ba3, "-98.2525128.2", HasAll("Gravity Surfaces", "Blue Moving Platforms")),    
+    ],
+    "zenith":[
+        MIUUCheckpoint("Checkpoint After First Rising Platform", Regions.ba3, "26.575-195", HasAll("Bounce Surfaces", "Blue Moving Platforms")),
+        MIUUCheckpoint("Checkpoint Before Super Jump with Gem", Regions.ba3, "231148.5-80", HasAll("Bounce Surfaces", "Blue Moving Platforms")),
+        MIUUCheckpoint("Checkpoint After Second Rising Platform", Regions.ba3, "163.54231.5-30.55", HasAll("Bounce Surfaces", "Blue Moving Platforms", "Super Jump")),
+        MIUUCheckpoint("Checkpoint After Third Rising Platform", Regions.ba3, "-145.531579.5", HasAll("Bounce Surfaces", "Blue Moving Platforms", "Super Jump")),
+        MIUUCheckpoint("Checkpoint After Double Super Jump", Regions.ba3, "-111.38478362", HasAll("Bounce Surfaces", "Blue Moving Platforms", "Super Jump")),        
+    ],
     #
     #Bonus 4
     #
