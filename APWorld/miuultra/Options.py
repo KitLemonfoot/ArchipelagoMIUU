@@ -29,13 +29,21 @@ class TreasureBoxSanity(Toggle):
     """
     display_name = "Treasureboxsanity"
 
-class CheckPointSanity(Toggle):
+class CheckPointSanity(Choice):
     """
     Enables checkpoints as checks.
+
+    disabled: Disables this option.
+    locations_only: Makes checkpoints locations only, without affecting respawning.
+    per_chapter: Adds "Checkpoint Access" useful items that enable respawning at checkpoints across an entire chapter.
+    per_level: Adds "Checkpoint Access" useful items that enable respawning at checkpoints from level-to-level.
     """
-    #TODO: Add multiple options for this to make checkpoint access items.
-    #...Ideally without having to rewrite item handling.
     display_name = "Checkpointsanity"
+    option_disabled = 0
+    option_locations_only = 1
+    option_per_chapter = 2
+    option_per_level = 3
+    default = 0
 
 class MedalsPerChapter(Range):
     """

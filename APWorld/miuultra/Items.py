@@ -2,6 +2,8 @@ from typing import List, Optional
 from dataclasses import dataclass
 from enum import Enum
 from BaseClasses import ItemClassification
+from .Levels import level_info_dict
+from .Checkpoints import checkpoint_dict
 
 #Changing the way games are made and played.
 base_id = 12506
@@ -10,15 +12,17 @@ class ItemType(Enum):
     Medal = 0
     Powerup = 1
     Gem = 2
-    Filler = 3
-    Trap = 4
-    End = 5
+    Checkpoint = 3
+    Filler = 4
+    Trap = 5
+    End = 6
 
 @dataclass
 class MIUUltraItem:
     name: str
     classification: ItemClassification
     itemType: ItemType
+    extraData: Optional[str] = None
 
 # Item List
 item_list: List[MIUUltraItem] = [
@@ -44,3 +48,27 @@ item_list: List[MIUUltraItem] = [
     MIUUltraItem("Ultra Arc Complete", ItemClassification.progression_skip_balancing, ItemType.End),
     MIUUltraItem("Bonus Arc Complete", ItemClassification.progression_skip_balancing, ItemType.End),
 ]
+
+world_checkpoint_list: List[MIUUltraItem] = [
+    MIUUltraItem("Chapter 1 Checkpoint Access", ItemClassification.useful, ItemType.Checkpoint, "u1"),
+    MIUUltraItem("Chapter 2 Checkpoint Access", ItemClassification.useful, ItemType.Checkpoint, "u2"),
+    MIUUltraItem("Chapter 3 Checkpoint Access", ItemClassification.useful, ItemType.Checkpoint, "u3"),
+    MIUUltraItem("Chapter 4 Checkpoint Access", ItemClassification.useful, ItemType.Checkpoint, "u4"),
+    MIUUltraItem("Chapter 5 Checkpoint Access", ItemClassification.useful, ItemType.Checkpoint, "u5"),
+    MIUUltraItem("Chapter 6 Checkpoint Access", ItemClassification.useful, ItemType.Checkpoint, "u6"),
+    MIUUltraItem("Bonus 1 Checkpoint Access", ItemClassification.useful, ItemType.Checkpoint, "b1"),
+    MIUUltraItem("Bonus 2 Checkpoint Access", ItemClassification.useful, ItemType.Checkpoint, "b2"),
+    MIUUltraItem("Bonus 3 Checkpoint Access", ItemClassification.useful, ItemType.Checkpoint, "b3"),
+    MIUUltraItem("Bonus 4 Checkpoint Access", ItemClassification.useful, ItemType.Checkpoint, "b4"),
+]
+
+# Generate the level checkpoint list for items.
+def getLevelCheckpointList():
+    level_checkpoint_list = []
+    for lvl in level_info_dict.keys():
+        if lvl in checkpoint_dict.keys():
+            level_checkpoint_list.append(MIUUltraItem(f"{level_info_dict[lvl].name} Checkpoint Access", ItemClassification.useful, ItemType.Checkpoint, lvl))
+    return level_checkpoint_list
+
+def getFullItemList():
+    return item_list + world_checkpoint_list + getLevelCheckpointList()

@@ -60,7 +60,7 @@ def get_location_data(player: Optional[int], options: Optional[MIUUltraOptions])
                     MIUUltraLocation(level.name+" Treasure Box", level.homeRegion, level.internalLevelId+"-tb", lvlLogic)
                 )
             #Checkpointsanity
-            if not options or options.checkpointsanity:
+            if not options or options.checkpointsanity.value > 0:
                 if level.internalLevelId in checkpoint_dict:
                     for ckpt in checkpoint_dict[level.internalLevelId]:
                         ckptLogic = And(ckpt.logic, medalLogic)
