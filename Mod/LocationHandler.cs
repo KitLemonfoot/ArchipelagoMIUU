@@ -55,7 +55,7 @@ namespace ArchipelagoMIUU
             {"mountmarblius_v2", [16, 16, 16, 16, 16]},
             {"transmission_v2", [32, 32, 32, 32, 32]},
             {"archipelago", [4, 4, 4, 4, 4]},
-            {"sugarRush", [2, 2, 2, 2, 1]},
+            {"sugarRush", [0, 2, 2, 2, 1]},
             {"slalom_v2", [32, 32, 32, 32, 32]},
             {"outskirts", [0, 0, 0, 0, 0]},
             {"offkilter", [8, 8, 8, 8, 8]},
