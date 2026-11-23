@@ -241,6 +241,7 @@ class MIUUltraWorld(World):
             "BonusArcChapters": self.options.bonus_arc_chapters.value,
             "EnableBlast": bool(self.options.enable_blast.value),
             "Treasureboxsanity": bool(self.options.treasureboxsanity.value),
+            "Checkpointsanity": self.options.checkpointsanity.value,
             "death_link": bool(self.options.death_link),
             "death_link_amnesty": self.options.death_link_amnesty.value
         }

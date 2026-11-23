@@ -50,16 +50,16 @@ item_list: List[MIUUltraItem] = [
 ]
 
 world_checkpoint_list: List[MIUUltraItem] = [
-    MIUUltraItem("Chapter 1 Checkpoint Access", ItemClassification.useful, ItemType.Checkpoint, "u1"),
-    MIUUltraItem("Chapter 2 Checkpoint Access", ItemClassification.useful, ItemType.Checkpoint, "u2"),
-    MIUUltraItem("Chapter 3 Checkpoint Access", ItemClassification.useful, ItemType.Checkpoint, "u3"),
-    MIUUltraItem("Chapter 4 Checkpoint Access", ItemClassification.useful, ItemType.Checkpoint, "u4"),
-    MIUUltraItem("Chapter 5 Checkpoint Access", ItemClassification.useful, ItemType.Checkpoint, "u5"),
-    MIUUltraItem("Chapter 6 Checkpoint Access", ItemClassification.useful, ItemType.Checkpoint, "u6"),
-    MIUUltraItem("Bonus 1 Checkpoint Access", ItemClassification.useful, ItemType.Checkpoint, "b1"),
-    MIUUltraItem("Bonus 2 Checkpoint Access", ItemClassification.useful, ItemType.Checkpoint, "b2"),
-    MIUUltraItem("Bonus 3 Checkpoint Access", ItemClassification.useful, ItemType.Checkpoint, "b3"),
-    MIUUltraItem("Bonus 4 Checkpoint Access", ItemClassification.useful, ItemType.Checkpoint, "b4"),
+    MIUUltraItem("Chapter 1: Get Moving - Checkpoint Access", ItemClassification.useful, ItemType.Checkpoint, "u1"),
+    MIUUltraItem("Chapter 2: The Subtle Joy of Rolling - Checkpoint Access", ItemClassification.useful, ItemType.Checkpoint, "u2"),
+    MIUUltraItem("Chapter 3: Focus on Flow - Checkpoint Access", ItemClassification.useful, ItemType.Checkpoint, "u3"),
+    MIUUltraItem("Chapter 4: Kick It Up A Notch - Checkpoint Access", ItemClassification.useful, ItemType.Checkpoint, "u4"),
+    MIUUltraItem("Chapter 5: Show Me What You Got - Checkpoint Access", ItemClassification.useful, ItemType.Checkpoint, "u5"),
+    MIUUltraItem("Chapter 6: Play for Keeps - Checkpoint Access", ItemClassification.useful, ItemType.Checkpoint, "u6"),
+    MIUUltraItem("Bonus 1: Keep on Rolling - Checkpoint Access", ItemClassification.useful, ItemType.Checkpoint, "b1"),
+    MIUUltraItem("Bonus 2: The Way of the Marble - Checkpoint Access", ItemClassification.useful, ItemType.Checkpoint, "b2"),
+    MIUUltraItem("Bonus 3: Keep Your Cool - Checkpoint Access", ItemClassification.useful, ItemType.Checkpoint, "b3"),
+    MIUUltraItem("Bonus 4: Challenge Accepted - Checkpoint Access", ItemClassification.useful, ItemType.Checkpoint, "b4"),
 ]
 
 # Generate the level checkpoint list for items.
@@ -67,7 +67,7 @@ def getLevelCheckpointList():
     level_checkpoint_list = []
     for lvl in level_info_dict.keys():
         if lvl in checkpoint_dict.keys():
-            level_checkpoint_list.append(MIUUltraItem(f"{level_info_dict[lvl].name} Checkpoint Access", ItemClassification.useful, ItemType.Checkpoint, lvl))
+            level_checkpoint_list.append(MIUUltraItem(f"{level_info_dict[lvl].name} - Checkpoint Access", ItemClassification.useful, ItemType.Checkpoint, lvl))
     return level_checkpoint_list
 
 def getFullItemList():

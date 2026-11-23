@@ -35,14 +35,14 @@ class CheckPointSanity(Choice):
 
     disabled: Disables this option.
     locations_only: Makes checkpoints locations only, without affecting respawning.
-    per_chapter: Adds "Checkpoint Access" useful items that enable respawning at checkpoints across an entire chapter.
-    per_level: Adds "Checkpoint Access" useful items that enable respawning at checkpoints from level-to-level.
+    items_per_chapter: Adds "Checkpoint Access" useful items that enable respawning at checkpoints across an entire chapter.
+    items_per_level: Adds "Checkpoint Access" useful items that enable respawning at checkpoints from level-to-level.
     """
     display_name = "Checkpointsanity"
     option_disabled = 0
     option_locations_only = 1
-    option_per_chapter = 2
-    option_per_level = 3
+    option_items_per_chapter = 2
+    option_items_per_level = 3
     default = 0
 
 class MedalsPerChapter(Range):

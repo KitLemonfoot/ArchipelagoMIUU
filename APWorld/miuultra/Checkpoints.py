@@ -73,8 +73,8 @@ checkpoint_dict: dict[str, List[MIUUCheckpoint]] = {
         MIUUCheckpoint("Checkpoint After Fourth Large Gear", Regions.ch3, "-341.757-164.75", Has("Blue Moving Platforms"))
     ],
     "archipelago": [
-        MIUUCheckpoint("Checkpoint After Red Moving Platforms", Regions.ch3, "109.01221114.75", True_()),
-        MIUUCheckpoint("Checkpoint Before Final Launch", Regions.ch3, "207.75633.25", True_())
+        MIUUCheckpoint("Checkpoint After Red Moving Platforms", Regions.ch3, "109.01221114.75", Has("Feather Fall")),
+        MIUUCheckpoint("Checkpoint Before Final Launch", Regions.ch3, "207.75633.25", Has("Feather Fall"))
     ],
     "sugarRush": [MIUUCheckpoint("Checkpoint At Midway Point", Regions.ch3, "-199.1314.6444.03", True_())],
     "slalom_v2": [

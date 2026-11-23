@@ -49,7 +49,7 @@ level_info_dict = {
     "mountmarblius_v2": MIUULevel("Mount Marblius", Regions.ch3, "mountmarblius_v2", Has("Bounce Surfaces"), True_(), True_(), 0),
     "transmission_v2": MIUULevel("Transmission", Regions.ch3, "transmission_v2", Has("Blue Moving Platforms"), True_(), True_(), 0),
     "archipelago": MIUULevel("Archipelago", Regions.ch3, "archipelago", Has("Feather Fall"), True_(), True_(), 0),
-    "sugarRush": MIUULevel("Sugar Rush", Regions.ch3, "sugarRush", Has("Boost"), True_(), Has("Super Jump"), 0),
+    "sugarRush": MIUULevel("Sugar Rush", Regions.ch3, "sugarRush", True_(), Has("Boost"), Has("Super Jump"), 0),
     "slalom_v2": MIUULevel("Slalom", Regions.ch3, "slalom_v2", Has("Blue Moving Platforms"), True_(), True_(), 0),
     "outskirts": MIUULevel("Outskirts", Regions.ch3, "outskirts", True_(), True_(), True_(), 0),
     "offkilter": MIUULevel("Off Kilter", Regions.ch3, "offkilter", Has("Gravity Surfaces"), True_(), True_(), 0),
