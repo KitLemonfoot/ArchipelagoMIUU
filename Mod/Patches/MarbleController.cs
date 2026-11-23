@@ -27,6 +27,20 @@ namespace ArchipelagoMIUU.Patches
         }
     }
 
+    //Handle granting marbles Blast.
+    [HarmonyPatch(typeof(MarbleController), "IsBlastAllowed")]
+    class MarbleController_IsBlastAllowed_Patch
+    {
+        public static bool Prefix(MarbleController __instance, ref bool __result)
+        {
+            if(ConnectHandler.Authenticated){
+                return true;
+            }
+            __result = ItemHandler.powerupFlags["Blast"];
+            return false;
+        }
+    }
+
     // Handle checkpointsanity.
     [HarmonyPatch(typeof(MarbleController), "OnCheckpoint")]
     class MarbleController_OnCheckpoint_Patch
@@ -49,11 +63,24 @@ namespace ArchipelagoMIUU.Patches
         }
     }
 
-    //For some reason, some levels spawn the marble out of bounds on load, which messes with Death Link.
-    //As such, disallow Death Link until the marble is done respawning.
+    //Respawn patches.
     [HarmonyPatch(typeof(MarbleController), "Respawn")]
     class MarbleController_Respawn_Patch
     {
+        //Null a checkpoint spawn if we do not have it unlocked. 
+        //Ignore if Checkpointsanity items are disabled or not connected to AP.
+        public static bool Prefix(MarbleController __instance)
+        {
+            if(!ConnectHandler.Authenticated){return true;}
+            if(ItemHandler.checkpointsanity < 2){return true;}
+            if(ItemHandler.allowedCheckpoints.Contains(LevelSelect.instance.level.name)){return true;}
+            if(ItemHandler.allowedCheckpoints.Contains(LevelSelect.instance.chapter.name)){return true;}
+            Traverse.Create(__instance).Field("LastCheckpoint").SetValue(null);
+            return true;
+        }
+
+        //For some reason, some levels spawn the marble out of bounds on load, which messes with Death Link.
+        //As such, disallow Death Link until the marble is done respawning.
         public static void Postfix(MarbleController __instance)
         {
             if (__instance.InMode(1))

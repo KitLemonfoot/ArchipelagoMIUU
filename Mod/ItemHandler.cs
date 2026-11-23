@@ -36,6 +36,8 @@ namespace ArchipelagoMIUU
           {"c4a", -1},
         };
 
+        public static int checkpointsanity = 0;
+        public static List<string> allowedCheckpoints = new List<string>();
         public static bool ultraArcComplete;
         public static bool bonusArcComplete;
 
@@ -54,6 +56,10 @@ namespace ArchipelagoMIUU
                     Notification.Notify(message, "Archipelago", 4f, Notification.instance.FoundEgg);
                 }
                 return;
+            }
+            if(itemName.EndsWith("- Checkpoint Access"))
+            {
+                allowedCheckpoints.Add(itemName.Substring(0,itemName.LastIndexOf('-')-1));
             }
             switch (itemName)
             {
@@ -133,6 +139,7 @@ namespace ArchipelagoMIUU
             goldCompletionMedals = 0;
             ultraArcComplete = false;
             bonusArcComplete = false;
+            allowedCheckpoints.Clear();
         }
 
         public static void checkForCompletion()

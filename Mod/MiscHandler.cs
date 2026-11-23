@@ -49,20 +49,6 @@ namespace ArchipelagoMIUU
             return "<color=#FFFFFF>";
         }
 
-        public static void doGrantBlast()
-        {
-            MarbleController[] array = GameProcess.ServerProcess.FindObjectsOfType<MarbleController>();
-            if (array.Length == 0)
-            {
-                Log("Failed to find any marbles to grant Blast to.");
-                return;
-            }
-            foreach(MarbleController marble in array)
-            {
-                marble.physMod.CanBlast = true;
-            }
-        }
-
         public static void doTimeTravelItem()
         {
             MarbleController[] array = GameProcess.ServerProcess.FindObjectsOfType<MarbleController>();
