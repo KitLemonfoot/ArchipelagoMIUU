@@ -90,6 +90,7 @@ namespace ArchipelagoMIUU
 				LocationHandler.bonusArcChapters = int.Parse(loginSuccess.SlotData["BonusArcChapters"].ToString());
 				ItemHandler.medalsPerChapter = int.Parse(loginSuccess.SlotData["MedalsPerChapter"].ToString());
 				LocationHandler.treasureboxsanity = bool.Parse(loginSuccess.SlotData["Treasureboxsanity"].ToString());
+				ItemHandler.checkpointsanity = int.Parse(loginSuccess.SlotData["Checkpointsanity"].ToString());
 
 				if (LocationHandler.diamondMedals)
 					LocationHandler.highestMedalType = 3;

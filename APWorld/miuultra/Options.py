@@ -29,6 +29,22 @@ class TreasureBoxSanity(Toggle):
     """
     display_name = "Treasureboxsanity"
 
+class CheckPointSanity(Choice):
+    """
+    Enables checkpoints as checks.
+
+    disabled: Disables this option.
+    locations_only: Makes checkpoints locations only, without affecting respawning.
+    items_per_chapter: Adds "Checkpoint Access" useful items that enable respawning at checkpoints across an entire chapter.
+    items_per_level: Adds "Checkpoint Access" useful items that enable respawning at checkpoints from level-to-level.
+    """
+    display_name = "Checkpointsanity"
+    option_disabled = 0
+    option_locations_only = 1
+    option_items_per_chapter = 2
+    option_items_per_level = 3
+    default = 0
+
 class MedalsPerChapter(Range):
     """
     Determine how many Completion Medals are needed to unlock each chapter.
@@ -149,6 +165,7 @@ class MIUUltraOptions(PerGameCommonOptions):
     medals_per_chapter: MedalsPerChapter
     extra_medals: ExtraMedals
     treasureboxsanity: TreasureBoxSanity
+    checkpointsanity: CheckPointSanity
     enable_blast: EnableBlast
     death_link: MIUUDeathLink
     death_link_amnesty: DeathLinkAmnesty
@@ -176,6 +193,7 @@ miuu_option_groups = [
     OptionGroup("Game Settings", [
         EnableBlast,
         TreasureBoxSanity,
+        CheckPointSanity,
         MIUUDeathLink,
         DeathLinkAmnesty
     ]),

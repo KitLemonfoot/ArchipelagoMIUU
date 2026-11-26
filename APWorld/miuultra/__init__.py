@@ -2,7 +2,7 @@ from typing import Dict, Any
 from worlds.AutoWorld import WebWorld, World
 from BaseClasses import Tutorial, Region, Location, Entrance, Item, ItemClassification
 from .Options import MIUUltraOptions, miuu_option_groups
-from .Items import base_id, item_list, ItemType
+from .Items import base_id, getFullItemList, item_list, ItemType
 from .Locations import get_location_data
 from .Regions import Regions
 from .Levels import level_info_dict, setupChapterList, chapterList, MIUULevel
@@ -39,12 +39,17 @@ class MIUUltraWorld(World):
     options: MIUUltraOptions
     web = MIUUltraWeb()
 
-    item_name_to_id = {item.name: (base_id + index) for index, item in enumerate(item_list)}
+    item_name_to_id = {item.name: (base_id + index) for index, item in enumerate(getFullItemList())}
     location_name_to_id = {loc.name: (base_id + index) for index, loc in enumerate(get_location_data(-1, None))}
+
+    # create_item uses this list for classifications; would rather not recalculate the entire item list every time an item is made in the multiworld.
+    # Caching this here.
+    full_item_list = getFullItemList()
 
     def __init__(self, multiworld, player):
         super(MIUUltraWorld, self).__init__(multiworld, player)
         self.game_id_to_long: Dict[str, int] = {}
+        self.levelList = []
         self.finalLevels: Dict[str, bool] = {}
         if(Levels.chapterList == []):
             Levels.setupChapterList()
@@ -61,8 +66,8 @@ class MIUUltraWorld(World):
         if len(self.options.medal_types.value) == 0:
             logging.warning(f"[MIUU] Player {self.player_name} did not enable any medal types! Enabling bronze medals.")
             self.options.medal_types.value.add("Bronze")
-        # Having only one medal type without treasureboxsanity guts fuzzing tests.
-        # Force two.
+        # Enforce two medal types to prevent fill errors.
+        # There is a special clause here that if treasurebox is on, bypass this enforcement.
         if len(self.options.medal_types.value) == 1 and self.options.treasureboxsanity.value == False:
             lowestSurrogate = "Bronze"
             if "Bronze" in self.options.medal_types.value:
@@ -73,7 +78,7 @@ class MIUUltraWorld(World):
     def create_item(self, name:str) -> MIUUltraItem:
         item_id: int = self.item_name_to_id[name]
         id = item_id - base_id
-        classification = item_list[id].classification
+        classification = self.full_item_list[id].classification
         return MIUUltraItem(name, classification, item_id, self.player)
 
     def create_regions(self):
@@ -86,6 +91,17 @@ class MIUUltraWorld(World):
             multiworld.regions += [Region(r.full_name, player, multiworld)]
             menu.add_exits({r.full_name})
         multiworld.regions.append(menu)
+
+        #Get full list of levels that we are playing.
+        #Will be used later for checkpoints/gems/level rando.
+        if self.options.ultra_arc_chapters.value > 0:
+            for ch in range(0, self.options.ultra_arc_chapters.value):
+                for lvl in Levels.chapterList[ch]:
+                    self.levelList.append(lvl)
+        if self.options.bonus_arc_chapters.value > 0:
+            for ch in range(6, self.options.bonus_arc_chapters.value+6):
+                for lvl in Levels.chapterList[ch]:
+                    self.levelList.append(lvl)
 
         for loc in get_location_data(player, self.options):
             id = self.location_name_to_id[loc.name]
@@ -152,6 +168,22 @@ class MIUUltraWorld(World):
             for _ in range(goldMedals):
                 pool.append(self.create_item("Gold Completion Medal"))
 
+        #Handle adding checkpoint access items, if any.
+        #World
+        if self.options.checkpointsanity == 2:
+            for cpSet in Items.world_checkpoint_list: 
+                homeChapter = int(cpSet.extraData[1])
+                if(cpSet.extraData.startswith('u') and homeChapter <= self.options.ultra_arc_chapters):
+                    pool.append(self.create_item(cpSet.name))
+                if(cpSet.extraData.startswith('b') and homeChapter <= self.options.bonus_arc_chapters):
+                    pool.append(self.create_item(cpSet.name))
+        #Level
+        if self.options.checkpointsanity == 3:
+            for cp in Items.getLevelCheckpointList():
+                if(cp.extraData in self.levelList):
+                    pool.append(self.create_item(cp.name))
+
+
         #Handle adding extra medals.
         extraMedals = self.options.extra_medals.value * self.options.ultra_arc_chapters.value
         if extraMedals > 0:
@@ -209,6 +241,7 @@ class MIUUltraWorld(World):
             "BonusArcChapters": self.options.bonus_arc_chapters.value,
             "EnableBlast": bool(self.options.enable_blast.value),
             "Treasureboxsanity": bool(self.options.treasureboxsanity.value),
+            "Checkpointsanity": self.options.checkpointsanity.value,
             "death_link": bool(self.options.death_link),
             "death_link_amnesty": self.options.death_link_amnesty.value
         }
