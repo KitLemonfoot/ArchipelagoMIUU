@@ -42,6 +42,9 @@ class MIUUltraWorld(World):
     item_name_to_id = {item.name: (base_id + index) for index, item in enumerate(getFullItemList())}
     location_name_to_id = {loc.name: (base_id + index) for index, loc in enumerate(get_location_data(-1, None))}
 
+    # Enable Universal Tracker yaml-less support
+    ut_can_gen_without_yaml = True
+
     # create_item uses this list for classifications; would rather not recalculate the entire item list every time an item is made in the multiworld.
     # Caching this here.
     full_item_list = getFullItemList()
@@ -55,6 +58,20 @@ class MIUUltraWorld(World):
             Levels.setupChapterList()
 
     def generate_early(self) -> None:
+        # Implement Universal Tracker yaml-less support
+        if hasattr(self.multiworld, "generation_is_fake"):
+            if hasattr(self.multiworld, "re_gen_passthrough"):
+                if "Marble It Up! Ultra" in self.multiworld.re_gen_passthrough:
+                    slot_data = self.multiworld.re_gen_passthrough["Marble It Up! Ultra"]
+                    self.options.goal_arc.value = slot_data["GoalArc"]
+                    self.options.ultra_arc_chapters.value = slot_data["UltraArcChapters"]
+                    self.options.bonus_arc_chapters.value = slot_data["BonusArcChapters"]
+                    self.options.medal_types.value = slot_data["MedalTypes"]
+                    self.options.medals_per_chapter.value = slot_data["MedalsPerChapter"]
+                    self.options.treasureboxsanity.value = slot_data["Treasureboxsanity"]
+                    self.options.checkpointsanity.value = slot_data["Checkpointsanity"]
+            return
+
         # Make sure enough chapters are selected in the chosen goal arc(s)
         if self.options.goal_arc.value in [0, 2] and self.options.ultra_arc_chapters.value < 3:
             logging.warning(f"[MIUU] Player {self.player_name} tried to have an Ultra Arc goal without adequate chapters. Enabling enough chapters.")
